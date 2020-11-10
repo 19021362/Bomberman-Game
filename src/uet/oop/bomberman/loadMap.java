@@ -14,6 +14,10 @@ public class loadMap {
     private String input_map = "";
     private List<Entity> stillObjects = new ArrayList<>();
 
+
+    /**
+     * ĐỌc bản đồ từ file.
+     */
     public void load() {
         try {
             FileReader input =
@@ -47,6 +51,7 @@ public class loadMap {
     public List<Entity> getStillObjects() {
         return stillObjects;
     }
+
     public void add(Entity o) {
         this.stillObjects.add(o);
     }
