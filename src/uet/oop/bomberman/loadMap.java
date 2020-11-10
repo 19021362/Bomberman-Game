@@ -17,7 +17,7 @@ public class loadMap {
     public void load() {
         try {
             FileReader input =
-                    new FileReader("C:\\Users\\ASUS\\IdeaProjects\\bomberman-starter-starter-2\\res\\levels\\1.txt");
+                    new FileReader("C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\1.txt");
             Scanner scanner = new Scanner(input);
             int j = 0;
             while (scanner.hasNextLine()) {
@@ -27,9 +27,9 @@ public class loadMap {
                     Entity object;
                     if (s.charAt(i) == '#') {
                         object = new Wall(i, j, Sprite.wall.getFxImage());
-                    } else if (s.charAt(i) == 'b') {
+                    } else if (s.charAt(i) == '*') {
                         object = new Brick(i, j, Sprite.brick.getFxImage());
-                    } else if (s.charAt(i) == 'p') {
+                    } else if (s.charAt(i) == 'x') {
                         object = new Portal(i, j, Sprite.portal.getFxImage());
                     } else {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
