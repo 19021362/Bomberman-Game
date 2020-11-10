@@ -15,6 +15,8 @@ import uet.oop.bomberman.loadMap;
 public class Bomber extends Entity {
 
     private final int speed = 5;
+    private int status = 0;              // Lấy Status % 3 để luân phiên lấy 3 giá trị 0 1 2, mỗi giá trị ứng với một tư thế chạy (1 ảnh)
+    private int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
@@ -22,9 +24,34 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
+        if(side == 1) {                         //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
+            if (status % 45 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
+                this.img = Sprite.player_right.getFxImage();
+            } else if (status % 45 == 15) {
+                this.img = Sprite.player_right_1.getFxImage();
+            } else if (status % 45 == 30){
+                this.img = Sprite.player_right_2.getFxImage();
+            }
+        }
 
+        if(side == -1) {                         //Nếu đang chạy phải sang trái thì dùng 3 ảnh dưới
+            if (status % 45 == 0) {
+                this.img = Sprite.player_left.getFxImage();
+            } else if (status % 45 == 15) {
+                this.img = Sprite.player_left_1.getFxImage();
+            } else if (status % 45 == 30){
+                this.img = Sprite.player_left_2.getFxImage();
+            }
+        }
+
+        status += 1;
     }
 
+    /**
+     * Bắt xự kiện từ bàn phím
+     * @param scene màn hình.
+     * @param map bản đồ để khi ấn SPACE thì đặt bom.
+     */
     @Override
     public void move(Scene scene, loadMap map) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -33,10 +60,12 @@ public class Bomber extends Entity {
                 KeyCode keyCode = event.getCode();
                 switch (keyCode) {
                     case RIGHT:
+                        side = 1;
                         x += speed;
                         check();
                         break;
                     case LEFT:
+                        side = -1;
                         x -= speed;
                         check();
                         break;
@@ -60,6 +89,9 @@ public class Bomber extends Entity {
         });
     }
 
+    /**
+     * check không cho vật thể đi ra ngoài màn hình.
+     */
     private void check() {
         if (x >= (640 - 64)) {
             x = 640 - 64;
