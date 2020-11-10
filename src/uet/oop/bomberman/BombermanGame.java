@@ -56,7 +56,7 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-        bomberman.move(scene);
+        bomberman.move(scene, map);
 
         map.load();
         //createMap();
