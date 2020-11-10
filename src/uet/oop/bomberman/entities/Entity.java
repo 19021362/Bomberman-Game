@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.loadMap;
 
 public abstract class Entity {
     //Tọa độ X tính từ góc trái trên trong Canvas
@@ -32,7 +33,7 @@ public abstract class Entity {
 
     public abstract void update();
 
-    public void move(Scene scene) {}
+    public void move(Scene scene, loadMap map) {}
 
 
 }
