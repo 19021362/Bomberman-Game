@@ -7,27 +7,22 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class BombermanGame extends Application {
-    
+
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
-    
+
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
-
+    private loadMap map = new loadMap();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -50,6 +45,8 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
+        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -59,30 +56,14 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-        createMap();
+        bomberman.move(scene, map);
 
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        map.load();
+        //createMap();
+
         entities.add(bomberman);
-
-        Entity bomberman2 = new Bomber(1, 10, Sprite.player_left.getFxImage());
-        bomberman2.x = 412;
-        entities.add(bomberman2);
     }
 
-    public void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
-                }
-                else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
-                }
-                stillObjects.add(object);
-            }
-        }
-    }
 
     public void update() {
         entities.forEach(Entity::update);
@@ -90,8 +71,7 @@ public class BombermanGame extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
+        map.getStillObjects().forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
-
 }
