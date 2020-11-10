@@ -1,20 +1,19 @@
 package uet.oop.bomberman.entities;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Scanner;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.loadMap;
 
-import java.util.Scanner;
+public class Bomber extends Entity {
 
-public class Bomber extends Entity{
-
-    int a = 20;
+    private final int speed = 5;
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
@@ -22,18 +21,51 @@ public class Bomber extends Entity{
 
     @Override
     public void update() {
-        if(x == 52) {
-            a = 1;
-            this.img = Sprite.player_right_1.getFxImage();
+
+    }
+
+    @Override
+    public void move(Scene scene) {
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                KeyCode keyCode = event.getCode();
+                switch (keyCode) {
+                    case RIGHT:
+                        x += speed;
+                        check();
+                        break;
+                    case LEFT:
+                        x -= speed;
+                        check();
+                        break;
+                    case UP:
+                        y -= speed;
+                        check();
+                        break;
+                    case DOWN:
+                        y += speed;
+                        check();
+                        break;
+                    default:
+                        check();
+                }
+            }
+        });
+    }
+
+    private void check() {
+        if (x >= (640 - 64)) {
+            x = 640 - 64;
         }
-
-        if(x == 412) {
-            a = -1;
-            this.img = Sprite.player_right.getFxImage();
+        if (x <= 32) {
+            x = 32;
         }
-
-        x += a;
-        System.out.println(x);
-
+        if (y >= 480 - 64) {
+            y = 480 - 64;
+        }
+        if (y <= 32) {
+            y = 32;
+        }
     }
 }
