@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
 public class Bomber extends Entity {
@@ -25,7 +26,7 @@ public class Bomber extends Entity {
     }
 
     @Override
-    public void move(Scene scene) {
+    public void move(Scene scene, loadMap map) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -46,6 +47,11 @@ public class Bomber extends Entity {
                     case DOWN:
                         y += speed;
                         check();
+                        break;
+                    case SPACE:
+                        Entity bomb = new Bomb(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE,
+                                Sprite.bomb.getFxImage());
+                        map.add(bomb);
                         break;
                     default:
                         check();
