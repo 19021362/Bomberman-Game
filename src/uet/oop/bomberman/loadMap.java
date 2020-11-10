@@ -47,4 +47,7 @@ public class loadMap {
     public List<Entity> getStillObjects() {
         return stillObjects;
     }
+    public void add(Entity o) {
+        this.stillObjects.add(o);
+    }
 }
