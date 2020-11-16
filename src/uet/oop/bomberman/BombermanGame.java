@@ -45,6 +45,8 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
+        map.load();
+
         Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
 
         AnimationTimer timer = new AnimationTimer() {
@@ -57,9 +59,6 @@ public class BombermanGame extends Application {
         timer.start();
 
         bomberman.move(scene, map);
-
-        map.load();
-        //createMap();
 
         entities.add(bomberman);
     }
