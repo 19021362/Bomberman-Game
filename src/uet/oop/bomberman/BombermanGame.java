@@ -66,6 +66,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        map.getStillObjects().forEach(Entity::update);
     }
 
     public void render() {
