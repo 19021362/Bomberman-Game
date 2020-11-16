@@ -18,7 +18,7 @@ public abstract class Entity {
 
     protected Image img;
 
-    protected int status = 0;
+    public int status = 0;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
