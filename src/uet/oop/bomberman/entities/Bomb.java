@@ -8,7 +8,7 @@ public class Bomb extends Entity {
 
     private int delay = 100;
 
-    public Bomb(int x, int y, Image img) {
+    public Bomb(int x, int y, Image img, loadMap map) {
         super(x, y, img);
     }
 

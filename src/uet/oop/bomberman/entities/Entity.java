@@ -46,4 +46,16 @@ public abstract class Entity {
     public boolean collision(Entity o) {
         return this.getBound().intersects(o.getBound().getBoundsInParent());
     }
+
+    public boolean collide(Entity e){
+        return false;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

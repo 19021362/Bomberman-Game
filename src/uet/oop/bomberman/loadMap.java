@@ -21,7 +21,7 @@ public class loadMap {
     public void load() {
         try {
             FileReader input =
-                    new FileReader("C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\1.txt");
+                    new FileReader("C:\\Users\\quang\\Desktop\\Bomberman-Game\\res\\levels\\1.txt");
             Scanner scanner = new Scanner(input);
             int j = 0;
             while (scanner.hasNextLine()) {
@@ -41,7 +41,6 @@ public class loadMap {
                     stillObjects.add(object);
                 }
                 j++;
-
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

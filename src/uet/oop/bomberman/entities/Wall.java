@@ -13,4 +13,8 @@ public class Wall extends Entity {
     public void update() {
 
     }
+    @Override
+    public boolean collide(Entity e){
+        return true;
+    }
 }
