@@ -1,24 +1,27 @@
 package uet.oop.bomberman;
 
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class loadMap {
     private String input_map = "";
-    private List<Entity> stillObjects = new ArrayList<>();
+    private static List<Entity> stillObjects = new ArrayList<>();
+    private static List<Entity> mob = new ArrayList<>();
 
 
     /**
      * ĐỌc bản đồ từ file.
      */
-    public void load() {
+    public static void load() {
         try {
             FileReader input =
                     new FileReader("C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\1.txt");
@@ -26,8 +29,8 @@ public class loadMap {
             int j = 0;
             while (scanner.hasNextLine()) {
                 String s = scanner.nextLine();
-                //System.out.println(s);
                 for (int  i = 0; i < s.length(); i++) {
+                    Entity object1;
                     Entity object;
                     if (s.charAt(i) == '#') {
                         object = new Wall(i, j, Sprite.wall.getFxImage());
@@ -36,7 +39,9 @@ public class loadMap {
                     } else if (s.charAt(i) == 'x') {
                         object = new Portal(i, j, Sprite.portal.getFxImage());
                     } else if (s.charAt(i) == 'b') {
-                        object = new Balloon(i, j, Sprite.balloom_left1.getFxImage());
+                        //System.out.println(i + " " + j);
+                        object = new Grass(i, j, Sprite.grass.getFxImage());
+                        mob.add(new Balloom(i, j, Sprite.balloom_left1.getFxImage()));
                     } else {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
                     }
@@ -48,17 +53,21 @@ public class loadMap {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        for (Entity o : mob) {
+            stillObjects.add(o);
+        }
     }
 
-    public List<Entity> getStillObjects() {
+    public static List<Entity> getStillObjects() {
         return stillObjects;
     }
 
-    public void setStillObjects(List<Entity> stillObjects) {
-        this.stillObjects = stillObjects;
+    public static void add(Entity o) {
+        stillObjects.add(o);
     }
 
-    public void add(Entity o) {
-        this.stillObjects.add(o);
+    public static void remove(Entity o) {
+        stillObjects.remove(o);
     }
 }
