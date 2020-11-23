@@ -35,6 +35,8 @@ public class loadMap {
                         object = new Brick(i, j, Sprite.brick.getFxImage());
                     } else if (s.charAt(i) == 'x') {
                         object = new Portal(i, j, Sprite.portal.getFxImage());
+                    } else if (s.charAt(i) == 'b') {
+                        object = new Balloon(i, j, Sprite.balloom_left1.getFxImage());
                     } else {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
                     }
