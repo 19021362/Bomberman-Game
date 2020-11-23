@@ -48,6 +48,7 @@ public class BombermanGame extends Application {
         map.load();
 
         Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        //Entity balloon = new Balloon(1, 2, Sprite.balloom_left1.getFxImage());
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -58,9 +59,10 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-        bomberman.move(scene, map);
-
         entities.add(bomberman);
+
+        entities.forEach(g -> g.move(scene, map));
+        map.getStillObjects().forEach(g -> g.move(scene, map));
     }
 
 
