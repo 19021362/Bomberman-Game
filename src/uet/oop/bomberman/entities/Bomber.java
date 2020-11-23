@@ -71,10 +71,9 @@ public class Bomber extends Entity {
     /**
      * Bắt xự kiện từ bàn phím
      * @param scene màn hình.
-     * @param map bản đồ để khi ấn SPACE thì đặt bom.
      */
     @Override
-    public void move(Scene scene, loadMap map) {
+    public void move(Scene scene) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -89,7 +88,7 @@ public class Bomber extends Entity {
                                 status = 0;
                             }
                             x += speed;
-                            if (collision(map)) {
+                            if (collision()) {
                                 x -= speed;
                             }
                             break;
@@ -102,7 +101,7 @@ public class Bomber extends Entity {
                                 status = 0;
                             }
                             x -= speed;
-                            if (collision(map)) {
+                            if (collision()) {
                                 x += speed;
                             }
                             break;
@@ -115,7 +114,7 @@ public class Bomber extends Entity {
                                 status = 0;
                             }
                             y -= speed;
-                            if (collision(map)) {
+                            if (collision()) {
                                 y += speed;
                             }
                             break;
@@ -128,7 +127,7 @@ public class Bomber extends Entity {
                                 status = 0;
                             }
                             y += speed;
-                            if (collision(map)) {
+                            if (collision()) {
                                 y -= speed;
                             }
                             break;
@@ -139,35 +138,25 @@ public class Bomber extends Entity {
                             Entity explosion = new Explosion((x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
                             (y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
                                     null);
-                            map.add(bomb);
-                            map.add(explosion);
+                            loadMap.add(bomb);
+                            loadMap.add(explosion);
 
                             break;
                         default:
-                            check(map);
+                            check();
                     }
             }
         });
     }
 
-    /**
-     * check không cho vật thể đi ra ngoài màn hình.
-     */
-    private void check(loadMap map) {
-        if (collision(map)) {
+    private void check() {
+        if (collision()) {
             speed = 0;
         }
     }
 
-    private boolean collision(loadMap map) {
-        boolean check = false;
-        List<Entity> obj = map.getStillObjects();
-        for (Entity o : obj) {
-            if (!o.canPass && this.collision(o)) {
-                check = true;
-                break;
-            }
-        }
-        return check;
+    @Override
+    public void kill() {
+
     }
 }
