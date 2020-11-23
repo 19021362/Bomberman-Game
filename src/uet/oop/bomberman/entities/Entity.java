@@ -9,6 +9,8 @@ import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
+import java.util.List;
+
 public abstract class Entity {
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;
@@ -35,18 +37,31 @@ public abstract class Entity {
 
     public abstract void update();
 
-    public void move(Scene scene, loadMap map) {}
+    public void move(Scene scene) {}
 
     protected void remove(Entity o) {
-        this.img = Sprite.grass.getFxImage();
+        loadMap.getStillObjects().set(loadMap.getStillObjects().indexOf(o),
+                new Grass(o.x, o.y, Sprite.grass.getFxImage()));
     }
 
     public Rectangle getBound() {
-        return new Rectangle(this.x + 4, this.y + 4, Sprite.SCALED_SIZE - 8, Sprite.SCALED_SIZE - 8);
+        return new Rectangle(this.x + 1, this.y + 1, 24, img.getHeight() - 1);
     }
 
     public boolean collision(Entity o) {
-        return this.getBound().intersects(o.getBound().getBoundsInParent());
+        return this.getBound().intersects(o.getBound().getBoundsInLocal());
+    }
+
+    public boolean collision() {
+        boolean check = false;
+        List<Entity> obj = loadMap.getStillObjects();
+        for (Entity o : obj) {
+            if (!o.canPass && this.collision(o)) {
+                check = true;
+                break;
+            }
+        }
+        return check;
     }
 
     public void kill() {}
@@ -54,4 +69,5 @@ public abstract class Entity {
     public void setCanPass(boolean canPass) {
         this.canPass = canPass;
     }
+
 }
