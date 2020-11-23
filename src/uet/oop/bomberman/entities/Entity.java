@@ -20,6 +20,8 @@ public abstract class Entity {
 
     public int status = 0;
 
+    protected boolean canPass = true;
+
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
         this.x = xUnit * Sprite.SCALED_SIZE;
@@ -40,10 +42,16 @@ public abstract class Entity {
     }
 
     public Rectangle getBound() {
-        return new Rectangle(this.x + 2, this.y + 2, Sprite.SCALED_SIZE - 2, Sprite.SCALED_SIZE -2);
+        return new Rectangle(this.x + 4, this.y + 4, Sprite.SCALED_SIZE - 8, Sprite.SCALED_SIZE - 8);
     }
 
     public boolean collision(Entity o) {
         return this.getBound().intersects(o.getBound().getBoundsInParent());
+    }
+
+    public void kill() {}
+
+    public void setCanPass(boolean canPass) {
+        this.canPass = canPass;
     }
 }
