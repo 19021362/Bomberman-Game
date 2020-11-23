@@ -13,4 +13,5 @@ public class Brick extends Entity {
     public void update() {
 
     }
+
 }
