@@ -22,8 +22,7 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-        if (status == 150) {
-
+        if (status == 120) {
             remove(this);
         } else {
             status++;
