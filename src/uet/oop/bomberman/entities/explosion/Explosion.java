@@ -6,9 +6,10 @@ import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.loadMap;
 
 public class Explosion extends Bomb{
-    protected int length = 1;
+    protected int length = 2;
 
     public Explosion(int x, int y, Image img) {
         super(x, y, img);
@@ -24,12 +25,13 @@ public class Explosion extends Bomb{
 
     @Override
     public void update() {
+
     }
 
     @Override
     public void render(GraphicsContext gc) {
         if (status == 150 ) {
-
+            remove(this);
         } else {
             status++;
             for (int i = 1; i < length; i++) {
@@ -78,4 +80,15 @@ public class Explosion extends Bomb{
     }
 
 
+    @Override
+    public boolean collision(Entity o) {
+        boolean check = false;
+        if (o.getBound().intersects((x - length * 32), y, (length * 2 * 32 + 32), 32)) {
+            check = true;
+        }
+        if (o.getBound().intersects(x, (y - length * 32), 32, (length * 32 * 2 + 32))) {
+            check = true;
+        }
+        return check;
+    }
 }
