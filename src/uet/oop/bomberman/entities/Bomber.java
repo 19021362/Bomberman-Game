@@ -2,13 +2,11 @@ package uet.oop.bomberman.entities;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
+import uet.oop.bomberman.entities.explosion.Bomb;
+import uet.oop.bomberman.entities.explosion.Explosion;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
@@ -138,7 +136,12 @@ public class Bomber extends Entity {
                             Entity bomb = new Bomb((x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
                                     (y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
                                     Sprite.bomb.getFxImage());
+                            Entity explosion = new Explosion((x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
+                            (y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
+                                    null);
                             map.add(bomb);
+                            map.add(explosion);
+
                             break;
                         default:
                             check(map);
@@ -160,15 +163,7 @@ public class Bomber extends Entity {
         boolean check = false;
         List<Entity> obj = map.getStillObjects();
         for (Entity o : obj) {
-            if (o instanceof Wall && this.collision(o)) {
-                check = true;
-                break;
-            }
-            if (o instanceof Brick && this.collision(o)) {
-                check = true;
-                break;
-            }
-            if (o instanceof Portal && this.collision(o)) {
+            if (!o.canPass && this.collision(o)) {
                 check = true;
                 break;
             }
