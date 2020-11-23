@@ -11,6 +11,8 @@ import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.List;
 
 public class BombermanGame extends Application {
@@ -22,7 +24,6 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
-    private loadMap map = new loadMap();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -45,9 +46,10 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
-        map.load();
+        loadMap.load();
 
         Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        //Entity balloon = new Balloon(1, 2, Sprite.balloom_left1.getFxImage());
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -58,20 +60,26 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-        bomberman.move(scene, map);
-
         entities.add(bomberman);
+
+        entities.forEach(g -> g.move(scene));
+        loadMap.getStillObjects().forEach(g -> g.move(scene));
     }
 
 
     public void update() {
         entities.forEach(Entity::update);
-        map.getStillObjects().forEach(Entity::update);
+        for (Entity o : loadMap.getStillObjects()) {
+                if (o != null) {
+                    o.update();
+                }
+        }
     }
+
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        map.getStillObjects().forEach(g -> g.render(gc));
+        loadMap.getStillObjects().forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
 }

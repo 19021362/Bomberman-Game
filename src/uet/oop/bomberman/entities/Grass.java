@@ -7,10 +7,12 @@ public class Grass extends Entity {
 
     public Grass(int x, int y, Image img) {
         super(x, y, img);
+        setCanPass(true);
     }
 
     @Override
     public void update() {
 
     }
+
 }

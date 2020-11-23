@@ -9,6 +9,8 @@ import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
+import java.util.List;
+
 public abstract class Entity {
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;
@@ -19,6 +21,8 @@ public abstract class Entity {
     protected Image img;
 
     public int status = 0;
+
+    protected boolean canPass = true;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
@@ -33,17 +37,37 @@ public abstract class Entity {
 
     public abstract void update();
 
-    public void move(Scene scene, loadMap map) {}
+    public void move(Scene scene) {}
 
     protected void remove(Entity o) {
-        this.img = Sprite.grass.getFxImage();
+        loadMap.getStillObjects().set(loadMap.getStillObjects().indexOf(o),
+                new Grass(o.x, o.y, Sprite.grass.getFxImage()));
     }
 
     public Rectangle getBound() {
-        return new Rectangle(this.x + 2, this.y + 2, Sprite.SCALED_SIZE - 2, Sprite.SCALED_SIZE -2);
+        return new Rectangle(this.x + 1, this.y + 1, 24, img.getHeight() - 1);
     }
 
     public boolean collision(Entity o) {
-        return this.getBound().intersects(o.getBound().getBoundsInParent());
+        return this.getBound().intersects(o.getBound().getBoundsInLocal());
     }
+
+    public boolean collision() {
+        boolean check = false;
+        List<Entity> obj = loadMap.getStillObjects();
+        for (Entity o : obj) {
+            if (!o.canPass && this.collision(o)) {
+                check = true;
+                break;
+            }
+        }
+        return check;
+    }
+
+    public void kill() {}
+
+    public void setCanPass(boolean canPass) {
+        this.canPass = canPass;
+    }
+
 }

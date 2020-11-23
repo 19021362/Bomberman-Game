@@ -2,13 +2,11 @@ package uet.oop.bomberman.entities;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
+import uet.oop.bomberman.entities.explosion.Bomb;
+import uet.oop.bomberman.entities.explosion.Explosion;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
@@ -73,10 +71,9 @@ public class Bomber extends Entity {
     /**
      * Bắt xự kiện từ bàn phím
      * @param scene màn hình.
-     * @param map bản đồ để khi ấn SPACE thì đặt bom.
      */
     @Override
-    public void move(Scene scene, loadMap map) {
+    public void move(Scene scene) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -91,7 +88,7 @@ public class Bomber extends Entity {
                                 status = 0;
                             }
                             x += speed;
-                            if (collision(map)) {
+                            if (collision()) {
                                 x -= speed;
                             }
                             break;
@@ -104,7 +101,7 @@ public class Bomber extends Entity {
                                 status = 0;
                             }
                             x -= speed;
-                            if (collision(map)) {
+                            if (collision()) {
                                 x += speed;
                             }
                             break;
@@ -117,7 +114,7 @@ public class Bomber extends Entity {
                                 status = 0;
                             }
                             y -= speed;
-                            if (collision(map)) {
+                            if (collision()) {
                                 y += speed;
                             }
                             break;
@@ -130,7 +127,7 @@ public class Bomber extends Entity {
                                 status = 0;
                             }
                             y += speed;
-                            if (collision(map)) {
+                            if (collision()) {
                                 y -= speed;
                             }
                             break;
@@ -138,41 +135,28 @@ public class Bomber extends Entity {
                             Entity bomb = new Bomb((x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
                                     (y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
                                     Sprite.bomb.getFxImage());
-                            map.add(bomb);
+                            Entity explosion = new Explosion((x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
+                            (y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
+                                    null);
+                            loadMap.add(bomb);
+                            loadMap.add(explosion);
+
                             break;
                         default:
-                            check(map);
+                            check();
                     }
             }
         });
     }
 
-    /**
-     * check không cho vật thể đi ra ngoài màn hình.
-     */
-    private void check(loadMap map) {
-        if (collision(map)) {
+    private void check() {
+        if (collision()) {
             speed = 0;
         }
     }
 
-    private boolean collision(loadMap map) {
-        boolean check = false;
-        List<Entity> obj = map.getStillObjects();
-        for (Entity o : obj) {
-            if (o instanceof Wall && this.collision(o)) {
-                check = true;
-                break;
-            }
-            if (o instanceof Brick && this.collision(o)) {
-                check = true;
-                break;
-            }
-            if (o instanceof Portal && this.collision(o)) {
-                check = true;
-                break;
-            }
-        }
-        return check;
+    @Override
+    public void kill() {
+
     }
 }
