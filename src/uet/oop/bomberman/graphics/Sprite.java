@@ -16,8 +16,8 @@ public class Sprite {
 	public final int SIZE;
 	private int _x, _y;
 	public int[] _pixels;
-	protected int _realWidth;
-	protected int _realHeight;
+	private int _realWidth;
+	private int _realHeight;
 	private SpriteSheet _sheet;
 
 	/*
@@ -195,7 +195,7 @@ public class Sprite {
 		_realHeight = rh;
 		load();
 	}
-	
+
 	public Sprite(int size, int color) {
 		SIZE = size;
 		_pixels = new int[SIZE * SIZE];
