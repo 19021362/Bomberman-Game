@@ -224,11 +224,11 @@ public class Sprite {
 			return normal;
 		}
 			
-		if(calc < diff * 2) {
+		else if(calc < diff * 2) {
 			return x1;
 		}
 			
-		return x2;
+		else {return x2;}
 	}
 	
 	public static Sprite movingSprite(Sprite x1, Sprite x2, int animate, int time) {
