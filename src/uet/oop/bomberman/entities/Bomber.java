@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import uet.oop.bomberman.entities.explosion.Bomb;
+import uet.oop.bomberman.entities.explosion.Direction;
 import uet.oop.bomberman.entities.explosion.Explosion;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
@@ -14,10 +15,10 @@ import java.util.List;
 
 public class Bomber extends Entity {
 
-    private int speed = 4;
-                                         // Lấy Status % 3 để luân phiên lấy 3 giá trị 0 1 2, mỗi giá trị ứng với một tư thế chạy (1 ảnh)
+    private int speed = 6;
+    private int length_bomb = 1;
     private int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
-    //private int status = -1;              // Lấy Status % 3 để luân phiên lấy 3 giá trị 0 1 2, mỗi giá trị ứng với một tư thế chạy (1 ảnh)
+
 
     private int side_h = 1;              // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
     private int side_v = 1;              // Hướng chạy hiện tại. 1: Trên -> Dưới. -1: Dưới -> Trên
@@ -132,15 +133,7 @@ public class Bomber extends Entity {
                             }
                             break;
                         case SPACE:
-                            Entity bomb = new Bomb((x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
-                                    (y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
-                                    Sprite.bomb.getFxImage());
-                            Entity explosion = new Explosion((x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
-                            (y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
-                                    null);
-                            loadMap.add(bomb);
-                            loadMap.add(explosion);
-
+                            creatBomb();
                             break;
                         default:
                             check();
@@ -155,8 +148,40 @@ public class Bomber extends Entity {
         }
     }
 
+    private void creatBomb() {
+        int _x = (x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE;
+        int _y = (y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE;
+        Entity bomb = new Bomb(_x, _y, Sprite.bomb.getFxImage(), this.x, this.y);
+        Entity right = new Direction(_x, _y, null, length_bomb, 6);
+        Entity left = new Direction(_x, _y, null, length_bomb, 4);
+        Entity down = new Direction(_x, _y, null, length_bomb, 2);
+        Entity top = new Direction(_x, _y, null, length_bomb, 8);
+        loadMap.add(bomb);
+        loadMap.add(right);
+        loadMap.add(left);
+        loadMap.add(down);
+        loadMap.add(top);
+    }
+
     @Override
     public void kill() {
+    }
 
+    @Override
+    public boolean collision() {
+        boolean check = false;
+        List<Entity> obj = loadMap.getStillObjects();
+        for (Entity o : obj) {
+            if (o instanceof Bomb) {
+                check = false;
+                break;
+            } else {
+                if (!o.canPass && this.collision(o)) {
+                    check = true;
+                    break;
+                }
+            }
+        }
+        return check;
     }
 }
