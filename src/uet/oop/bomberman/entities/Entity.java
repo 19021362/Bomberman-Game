@@ -41,15 +41,17 @@ public abstract class Entity {
 
     protected void remove(Entity o) {
         loadMap.getStillObjects().set(loadMap.getStillObjects().indexOf(o),
-                new Grass(o.x, o.y, Sprite.grass.getFxImage()));
+                new Grass(o.x / Sprite.SCALED_SIZE,
+                        o.y / Sprite.SCALED_SIZE,
+                        Sprite.grass.getFxImage()));
     }
 
     public Rectangle getBound() {
-        return new Rectangle(this.x + 1, this.y + 1, 24, img.getHeight() - 1);
+        return new Rectangle(this.x + 1, this.y + 1, 24, 31);
     }
 
     public boolean collision(Entity o) {
-        return this.getBound().intersects(o.getBound().getBoundsInLocal());
+        return this.getBound().intersects(o.getBound().getBoundsInParent());
     }
 
     public boolean collision() {
@@ -58,6 +60,18 @@ public abstract class Entity {
         for (Entity o : obj) {
             if (!o.canPass && this.collision(o)) {
                 check = true;
+                break;
+            }
+        }
+        return check;
+    }
+
+    public boolean destroyable() {
+        boolean check = true;
+        List<Entity> obj = loadMap.getStillObjects();
+        for (Entity o : obj) {
+            if (o instanceof Wall && this.collision(o)) {
+                check = false;
                 break;
             }
         }

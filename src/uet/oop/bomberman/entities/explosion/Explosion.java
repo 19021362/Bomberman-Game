@@ -8,87 +8,93 @@ import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
-public class Explosion extends Bomb{
-    protected int length = 2;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Explosion extends Entity{
+    private Sprite[] sprites = new Sprite[3];
 
     public Explosion(int x, int y, Image img) {
         super(x, y, img);
         setCanPass(true);
     }
 
-    public Explosion(int x, int y, Image img, int length) {
+    public Explosion(int x, int y, Image img, int dir, boolean last) {
         super(x, y, img);
-        this.length = length;
         setCanPass(true);
+        switch (dir) {
+            case 6:
+                if(!last) {
+                    sprites[0] = Sprite.explosion_horizontal;
+                    sprites[1] = Sprite.explosion_horizontal1;
+                    sprites[2] = Sprite.explosion_horizontal2;
+                } else {
+                    sprites[0] = Sprite.explosion_horizontal_right_last;
+                    sprites[1] = Sprite.explosion_horizontal_right_last1;
+                    sprites[2] = Sprite.explosion_horizontal_right_last2;
+                }
+                break;
+            case 4:
+                if(!last) {
+                    sprites[0] = Sprite.explosion_horizontal;
+                    sprites[1] = Sprite.explosion_horizontal1;
+                    sprites[2] = Sprite.explosion_horizontal2;
+                } else {
+                    sprites[0] = Sprite.explosion_horizontal_left_last;
+                    sprites[1] = Sprite.explosion_horizontal_left_last1;
+                    sprites[2] = Sprite.explosion_horizontal_left_last2;
+                }
+                break;
+            case 2:
+                if(!last) {
+                    sprites[0] = Sprite.explosion_vertical;
+                    sprites[1] = Sprite.explosion_vertical1;
+                    sprites[2] = Sprite.explosion_vertical2;
+                } else {
+                    sprites[0] = Sprite.explosion_vertical_down_last;
+                    sprites[1] = Sprite.explosion_vertical_down_last1;
+                    sprites[2] = Sprite.explosion_vertical_down_last2;
+                }
+                break;
+            case 8:
+                if(!last) {
+                    sprites[0] = Sprite.explosion_vertical;
+                    sprites[1] = Sprite.explosion_vertical1;
+                    sprites[2] = Sprite.explosion_vertical2;
+                } else {
+                    sprites[0] = Sprite.explosion_vertical_top_last;
+                    sprites[1] = Sprite.explosion_vertical_top_last1;
+                    sprites[2] = Sprite.explosion_vertical_top_last2;
+                }
+                break;
+        }
     }
 
 
     @Override
     public void update() {
-
-    }
-
-    @Override
-    public void render(GraphicsContext gc) {
-        if (status == 150 ) {
+        if (status == 150) {
             remove(this);
         } else {
             status++;
-            for (int i = 1; i < length; i++) {
-                if (status >= 120) {
-                    gc.drawImage(Sprite.explosion_horizontal.getFxImage(), x + i * 32, y);
-                    gc.drawImage(Sprite.explosion_horizontal.getFxImage(), x - i * 32, y);
-                    gc.drawImage(Sprite.explosion_vertical.getFxImage(), x, y + i * 32);
-                    gc.drawImage(Sprite.explosion_vertical.getFxImage(), x, y - i * 32);
-                }
-                if (status >= 130) {
-                    gc.drawImage(Sprite.explosion_horizontal1.getFxImage(), x + i * 32, y);
-                    gc.drawImage(Sprite.explosion_horizontal1.getFxImage(), x - i * 32, y);
-                    gc.drawImage(Sprite.explosion_vertical1.getFxImage(), x, y + i * 32);
-                    gc.drawImage(Sprite.explosion_vertical1.getFxImage(), x, y - i * 32);
-                }
-                if (status >= 140) {
-                    gc.drawImage(Sprite.explosion_horizontal2.getFxImage(), x + i * 32, y);
-                    gc.drawImage(Sprite.explosion_horizontal2.getFxImage(), x - i * 32, y);
-                    gc.drawImage(Sprite.explosion_vertical2.getFxImage(), x, y + i * 32);
-                    gc.drawImage(Sprite.explosion_vertical2.getFxImage(), x, y - i * 32);
-                }
+            if (status > 120) {
+                this.img = sprites[0].getFxImage();
             }
-            if (status >= 120) {
-                gc.drawImage(Sprite.bomb_exploded.getFxImage(), x, y);
-                gc.drawImage(Sprite.explosion_horizontal_right_last.getFxImage(), x + length * 32, y);
-                gc.drawImage(Sprite.explosion_horizontal_left_last.getFxImage(), x - length * 32, y);
-                gc.drawImage(Sprite.explosion_vertical_down_last.getFxImage(), x, y + length * 32);
-                gc.drawImage(Sprite.explosion_vertical_top_last.getFxImage(), x, y - length * 32);
+            if (status > 130) {
+                this.img = sprites[1].getFxImage();
             }
-            if (status >= 130) {
-                gc.drawImage(Sprite.bomb_exploded1.getFxImage(), x, y);
-                gc.drawImage(Sprite.explosion_horizontal_right_last1.getFxImage(), x + length * 32, y);
-                gc.drawImage(Sprite.explosion_horizontal_left_last1.getFxImage(), x - length * 32, y);
-                gc.drawImage(Sprite.explosion_vertical_down_last1.getFxImage(), x, y + length * 32);
-                gc.drawImage(Sprite.explosion_vertical_top_last1.getFxImage(), x, y - length * 32);
+            if (status > 140) {
+                this.img = sprites[2].getFxImage();
             }
-            if (status >= 140) {
-                gc.drawImage(Sprite.bomb_exploded2.getFxImage(), x, y);
-                gc.drawImage(Sprite.explosion_horizontal_right_last2.getFxImage(), x + length * 32, y);
-                gc.drawImage(Sprite.explosion_horizontal_left_last2.getFxImage(), x - length * 32, y);
-                gc.drawImage(Sprite.explosion_vertical_down_last2.getFxImage(), x, y + length * 32);
-                gc.drawImage(Sprite.explosion_vertical_top_last2.getFxImage(), x, y - length * 32);
-            }
-
         }
     }
 
 
-    @Override
-    public boolean collision(Entity o) {
-        boolean check = false;
-        if (o.getBound().intersects((x - length * 32), y, (length * 2 * 32 + 32), 32)) {
-            check = true;
-        }
-        if (o.getBound().intersects(x, (y - length * 32), 32, (length * 32 * 2 + 32))) {
-            check = true;
-        }
-        return check;
-    }
+
+
+
+
+
+
 }

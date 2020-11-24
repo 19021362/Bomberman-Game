@@ -63,23 +63,21 @@ public class BombermanGame extends Application {
         entities.add(bomberman);
 
         entities.forEach(g -> g.move(scene));
-        loadMap.getStillObjects().forEach(g -> g.move(scene));
+        loadMap.getMob().forEach(g -> g.move(scene));
     }
 
 
     public void update() {
+        loadMap.getStillObjects().forEach(Entity::update);
+        loadMap.getMob().forEach(Entity::update);
         entities.forEach(Entity::update);
-        for (Entity o : loadMap.getStillObjects()) {
-                if (o != null) {
-                    o.update();
-                }
-        }
     }
 
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         loadMap.getStillObjects().forEach(g -> g.render(gc));
+        loadMap.getMob().forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
 }
