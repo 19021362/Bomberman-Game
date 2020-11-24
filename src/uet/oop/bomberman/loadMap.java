@@ -54,13 +54,14 @@ public class loadMap {
             e.printStackTrace();
         }
 
-        for (Entity o : mob) {
-            stillObjects.add(o);
-        }
     }
 
     public static List<Entity> getStillObjects() {
         return stillObjects;
+    }
+
+    public static List<Entity> getMob() {
+        return mob;
     }
 
     public static void add(Entity o) {
