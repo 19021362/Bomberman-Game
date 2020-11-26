@@ -1,13 +1,15 @@
 package uet.oop.bomberman;
 
-import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.mob.Balloom;
+import uet.oop.bomberman.entities.tile.Brick;
+import uet.oop.bomberman.entities.tile.Grass;
+import uet.oop.bomberman.entities.tile.Portal;
+import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -30,16 +32,15 @@ public class loadMap {
             while (scanner.hasNextLine()) {
                 String s = scanner.nextLine();
                 for (int  i = 0; i < s.length(); i++) {
-                    Entity object1;
                     Entity object;
                     if (s.charAt(i) == '#') {
                         object = new Wall(i, j, Sprite.wall.getFxImage());
                     } else if (s.charAt(i) == '*') {
+                        stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
                         object = new Brick(i, j, Sprite.brick.getFxImage());
                     } else if (s.charAt(i) == 'x') {
                         object = new Portal(i, j, Sprite.portal.getFxImage());
                     } else if (s.charAt(i) == 'b') {
-                        //System.out.println(i + " " + j);
                         object = new Grass(i, j, Sprite.grass.getFxImage());
                         mob.add(new Balloom(i, j, Sprite.balloom_left1.getFxImage()));
                     } else {
