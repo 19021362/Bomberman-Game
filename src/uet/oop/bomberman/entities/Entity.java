@@ -1,11 +1,13 @@
 package uet.oop.bomberman.entities;
 
 
-import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
+import uet.oop.bomberman.entities.mob.Mob;
+import uet.oop.bomberman.entities.tile.Grass;
+import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
@@ -22,7 +24,7 @@ public abstract class Entity {
 
     public int status = 0;
 
-    protected boolean canPass = true;
+    public boolean canPass = true;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
@@ -40,14 +42,21 @@ public abstract class Entity {
     public void move(Scene scene) {}
 
     protected void remove(Entity o) {
-        loadMap.getStillObjects().set(loadMap.getStillObjects().indexOf(o),
-                new Grass(o.x / Sprite.SCALED_SIZE,
-                        o.y / Sprite.SCALED_SIZE,
-                        Sprite.grass.getFxImage()));
+        if (o instanceof Mob) {
+            loadMap.getMob().set(loadMap.getMob().indexOf(o),
+                    new Grass((o.x - Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
+                            (o.y - Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
+                            Sprite.grass.getFxImage()));
+        } else {
+            loadMap.getStillObjects().set(loadMap.getStillObjects().indexOf(o),
+                    new Grass(o.x / Sprite.SCALED_SIZE,
+                            o.y / Sprite.SCALED_SIZE,
+                            Sprite.grass.getFxImage()));
+        }
     }
 
     public Rectangle getBound() {
-        return new Rectangle(this.x + 1, this.y + 1, 24, 31);
+        return new Rectangle(this.x + 1, this.y + 1, 24, 28);
     }
 
     public boolean collision(Entity o) {
@@ -55,15 +64,11 @@ public abstract class Entity {
     }
 
     public boolean collision() {
-        boolean check = false;
-        List<Entity> obj = loadMap.getStillObjects();
-        for (Entity o : obj) {
-            if (!o.canPass && this.collision(o)) {
-                check = true;
-                break;
-            }
-        }
-        return check;
+        return false;
+    }
+
+    public void setCanPass(boolean canPass) {
+        this.canPass = canPass;
     }
 
     public boolean destroyable() {
@@ -76,12 +81,6 @@ public abstract class Entity {
             }
         }
         return check;
-    }
-
-    public void kill() {}
-
-    public void setCanPass(boolean canPass) {
-        this.canPass = canPass;
     }
 
 }
