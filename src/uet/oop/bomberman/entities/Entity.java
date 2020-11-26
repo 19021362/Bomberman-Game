@@ -44,9 +44,7 @@ public abstract class Entity {
     protected void remove(Entity o) {
         if (o instanceof Mob) {
             loadMap.getMob().set(loadMap.getMob().indexOf(o),
-                    new Grass((o.x - Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
-                            (o.y - Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE,
-                            Sprite.grass.getFxImage()));
+                    null);
         } else {
             loadMap.getStillObjects().set(loadMap.getStillObjects().indexOf(o),
                     new Grass(o.x / Sprite.SCALED_SIZE,
