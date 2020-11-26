@@ -1,19 +1,18 @@
 package uet.oop.bomberman.entities.explosion;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.mob.Mob;
+import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class Explosion extends Entity{
     private Sprite[] sprites = new Sprite[3];
+    private boolean explode_rl = false;
 
     public Explosion(int x, int y, Image img) {
         super(x, y, img);
@@ -79,6 +78,7 @@ public class Explosion extends Entity{
         } else {
             status++;
             if (status > 120) {
+                explode_rl = true;
                 this.img = sprites[0].getFxImage();
             }
             if (status > 130) {
@@ -87,14 +87,24 @@ public class Explosion extends Entity{
             if (status > 140) {
                 this.img = sprites[2].getFxImage();
             }
+            exp_collision();
         }
     }
 
+    public boolean isExplode_rl() {
+        return explode_rl;
+    }
 
-
-
-
-
-
+    public void exp_collision() {
+        for (Entity o : loadMap.getMob()) {
+            if (explode_rl) {
+                if (o instanceof Mob && this.collision(o)) {
+                    ((Mob) o).setLive(false);
+                }
+            } else {
+                break;
+            }
+        }
+    }
 
 }
