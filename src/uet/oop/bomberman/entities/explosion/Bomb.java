@@ -1,15 +1,9 @@
 package uet.oop.bomberman.entities.explosion;
 
-import com.sun.prism.Graphics;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.entities.Balloom;
-import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.loadMap;
-
-import java.util.List;
 
 public class Bomb extends Entity {
 

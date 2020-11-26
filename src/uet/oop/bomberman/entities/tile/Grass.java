@@ -1,4 +1,5 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.tile;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.loadMap;
 
 import javafx.scene.image.Image;

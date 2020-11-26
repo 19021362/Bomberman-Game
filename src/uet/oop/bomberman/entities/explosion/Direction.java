@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.explosion;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
@@ -27,6 +28,11 @@ public class Direction extends Entity {
 
     @Override
     public void update() {
+        if (status == 150) {
+            remove(this);
+        } else {
+            status++;
+        }
     }
 
     private int CalculateLength (int length) {
@@ -41,7 +47,6 @@ public class Direction extends Entity {
             switch (dir) {
                 case 6:
                     _x += i;
-
                     break;
                 case 4:
                     _x -= i;

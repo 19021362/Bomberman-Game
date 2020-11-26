@@ -1,4 +1,4 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.mob;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.explosion.Bomb;
 import uet.oop.bomberman.entities.explosion.Explosion;
 import uet.oop.bomberman.graphics.Sprite;
@@ -14,8 +15,8 @@ import uet.oop.bomberman.loadMap;
 import java.util.List;
 import java.util.Random;
 
-public class Balloom extends Entity {
-    private int speed = 2;
+public class Balloom extends Mob {
+    private int speed = 1;
     private int dir = 0;
     private int side_h = 1;     // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái.
     private Random rd = new Random();
@@ -25,8 +26,17 @@ public class Balloom extends Entity {
 
     @Override
     public void update() {
-        calculateDir();
-        move();
+        if (live) {
+            calculateDir();
+            move();
+        } else {
+            if (animation == 30) {
+                remove(this);
+            } else {
+                animation++;
+                kill();
+            }
+        }
     }
 
 
@@ -96,4 +106,8 @@ public class Balloom extends Entity {
         }
     }
 
+    @Override
+    public void kill() {
+        img = Sprite.movingSprite(Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, animation, 30).getFxImage();
+    }
 }
