@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.explosion.Bomb;
+import uet.oop.bomberman.entities.explosion.Direction;
 import uet.oop.bomberman.entities.explosion.Explosion;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
@@ -25,6 +26,10 @@ public class Balloom extends Entity {
 
     @Override
     public void update() {
+        if(kill()){
+            rendering();
+            //loadMap.removeMob(this);
+        }
         calculateDir();
         move();
     }
@@ -95,5 +100,23 @@ public class Balloom extends Entity {
                 break;
         }
     }
-
+    @Override
+    public boolean kill(){
+        for(Entity e:loadMap.getStillObjects()){
+            if(e instanceof Direction && this.collision(e)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public void rendering(){
+        if (status == 150) {
+            loadMap.removeMob(this);
+        } else {
+            status++;
+            if(status>60){
+                img = Sprite.balloom_dead.getFxImage();
+            }
+            }
+    }
 }

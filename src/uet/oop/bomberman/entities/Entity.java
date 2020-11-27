@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
+import uet.oop.bomberman.entities.explosion.Direction;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
@@ -44,6 +45,11 @@ public abstract class Entity {
                 new Grass(o.x / Sprite.SCALED_SIZE,
                         o.y / Sprite.SCALED_SIZE,
                         Sprite.grass.getFxImage()));
+        for(Entity e:loadMap.getStillObjects()){
+            if(e instanceof Direction){
+                System.out.println(e);
+            }
+        }
     }
 
     public Rectangle getBound() {
@@ -78,7 +84,9 @@ public abstract class Entity {
         return check;
     }
 
-    public void kill() {}
+    public boolean kill(){
+        return false;
+    }
 
     public void setCanPass(boolean canPass) {
         this.canPass = canPass;

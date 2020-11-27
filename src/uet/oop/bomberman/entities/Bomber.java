@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Bomber extends Entity {
 
-    private int speed = 6;
+    private int speed = 4;
     private int length_bomb = 1;
     private int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
 
@@ -164,7 +164,8 @@ public class Bomber extends Entity {
     }
 
     @Override
-    public void kill() {
+    public boolean kill() {
+        return true;
     }
 
     @Override

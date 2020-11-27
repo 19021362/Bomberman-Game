@@ -27,6 +27,13 @@ public class Direction extends Entity {
 
     @Override
     public void update() {
+        if(status == 150){
+            remove(this);
+        }
+        else{
+            status++;
+        }
+
     }
 
     private int CalculateLength (int length) {

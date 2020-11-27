@@ -24,7 +24,7 @@ public class loadMap {
     public static void load() {
         try {
             FileReader input =
-                    new FileReader("C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\1.txt");
+                    new FileReader("C:\\Users\\quang\\Desktop\\Bomberman-Game\\res\\levels\\1.txt");
             Scanner scanner = new Scanner(input);
             int j = 0;
             while (scanner.hasNextLine()) {
@@ -71,4 +71,5 @@ public class loadMap {
     public static void remove(Entity o) {
         stillObjects.remove(o);
     }
+    public static void removeMob(Entity o){mob.remove(o);}
 }
