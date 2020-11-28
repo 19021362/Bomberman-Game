@@ -32,7 +32,7 @@ public class Bomber extends Mob {
 
     @Override
     public void update() {
-        if (live) {
+        if (blood > 0) {
             if (side_h == 1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
                 if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
                     this.img = Sprite.player_right.getFxImage();
@@ -70,6 +70,10 @@ public class Bomber extends Mob {
                     this.img = Sprite.player_up_2.getFxImage();
                 }
             }
+            if (!live) {
+                blood--;
+                setLive(true);
+            }
         } else {
             if (animation == 30) {
                 PlayMusic(dead_fx);
@@ -88,7 +92,7 @@ public class Bomber extends Mob {
      */
     @Override
     public void move(Scene scene) {
-        if (live) {
+        if (blood > 0) {
             scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent event) {
@@ -198,13 +202,12 @@ public class Bomber extends Mob {
     @Override
     public boolean collision() {
         boolean check = false;
-        List<Entity> obj = loadMap.getStillObjects();
-        for (Entity o : obj) {
+        for (Entity o : loadMap.getStillObjects()) {
             if (o instanceof Bomb) {
                 check = false;
                 break;
             } else {
-                if (!o.canPass && this.collision(o)) {
+                if (o!= null && !o.canPass && this.collision(o)) {
                     check = true;
                     break;
                 }
@@ -213,7 +216,11 @@ public class Bomber extends Mob {
         return check;
     }
 
+    public void boostLength_bomb() {
+        this.length_bomb++;
+    }
 
-
-
+    public void boostSpeed() {
+        this.speed++;
+    }
 }

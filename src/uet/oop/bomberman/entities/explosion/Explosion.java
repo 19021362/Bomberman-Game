@@ -81,13 +81,15 @@ public class Explosion extends Entity{
                 explode_rl = true;
                 this.img = sprites[0].getFxImage();
             }
+            if (status == 125) {
+                exp_collision();
+            }
             if (status > 130) {
                 this.img = sprites[1].getFxImage();
             }
             if (status > 140) {
                 this.img = sprites[2].getFxImage();
             }
-            exp_collision();
         }
     }
 

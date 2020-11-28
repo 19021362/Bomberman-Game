@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.entities.mob.Mob;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Wall;
+import uet.oop.bomberman.entities.tile.item.Item;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
@@ -50,9 +51,7 @@ public abstract class Entity {
                     null);
         } else {
             loadMap.getStillObjects().set(loadMap.getStillObjects().indexOf(o),
-                    new Grass(o.x / Sprite.SCALED_SIZE,
-                            o.y / Sprite.SCALED_SIZE,
-                            Sprite.grass.getFxImage()));
+                    null);
         }
     }
 

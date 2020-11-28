@@ -36,7 +36,7 @@ public class Bomb extends Entity {
             remove(this);
         } else {
             status++;
-            System.out.println(status);
+            //System.out.println(status);
             if (status % delay == 0) {
                 this.img = Sprite.bomb.getFxImage();
             }

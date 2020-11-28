@@ -26,9 +26,13 @@ public class Balloom extends Mob {
 
     @Override
     public void update() {
-        if (live) {
+        if (blood > 0) {
             calculateDir();
             move();
+            if (!live) {
+                blood--;
+                setLive(true);
+            }
         } else {
             if (animation == 30) {
                 remove(this);
