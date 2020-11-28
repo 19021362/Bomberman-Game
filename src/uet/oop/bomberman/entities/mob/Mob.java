@@ -10,6 +10,7 @@ import java.util.List;
 
 public abstract class Mob extends Entity {
     protected int animation = 0;
+    protected int blood = 1;
     protected boolean live = true;
 
     public Mob(int xUnit, int yUnit, Image img) {
@@ -28,7 +29,7 @@ public abstract class Mob extends Entity {
         }
 
         for (Entity o : loadMap.getStillObjects()) {
-            if (!o.canPass && this.collision(o)) {
+            if (o != null && !o.canPass && this.collision(o)) {
                 check = true;
                 break;
             }
@@ -40,11 +41,19 @@ public abstract class Mob extends Entity {
 
     }
 
+    public void setBlood(int blood) {
+        this.blood += blood;
+    }
+
+    public int getBlood() {
+        return blood;
+    }
+
     public void setLive(boolean live) {
         this.live = live;
     }
 
-    public boolean isLive() {
-        return live;
+    public boolean getLive() {
+        return this.live;
     }
 }
