@@ -43,4 +43,8 @@ public abstract class Mob extends Entity {
     public void setLive(boolean live) {
         this.live = live;
     }
+
+    public boolean isLive() {
+        return live;
+    }
 }
