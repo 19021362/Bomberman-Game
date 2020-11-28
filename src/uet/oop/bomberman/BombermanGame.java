@@ -12,6 +12,9 @@ import uet.oop.bomberman.entities.mob.Bomber;
 import uet.oop.bomberman.entities.mob.Mob;
 import uet.oop.bomberman.graphics.Sprite;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,7 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -41,6 +45,8 @@ public class BombermanGame extends Application {
 
         // Tao scene
         Scene scene = new Scene(root);
+
+
 
         // Them scene vao stage
         stage.setScene(scene);
@@ -58,6 +64,9 @@ public class BombermanGame extends Application {
                 update();
             }
         };
+
+        PlayMusic();
+
         timer.start();
 
         loadMap.getMob().add(bomberman);
@@ -67,6 +76,8 @@ public class BombermanGame extends Application {
                 loadMap.getMob().get(i).move(scene);
             }
         }
+
+        //PlayMusic();
     }
 
 
@@ -87,6 +98,22 @@ public class BombermanGame extends Application {
             if (loadMap.getMob().get(i) != null) {
                 loadMap.getMob().get(i).render(gc);
             }
+        }
+    }
+
+    private static void PlayMusic() {
+        String filename = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\background.WAV";
+        try
+        {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(new File(filename)));
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
+            Thread.sleep(clip.getMicrosecondLength()/1000000);
+        }
+        catch (Exception exc)
+        {
+            exc.printStackTrace(System.out);
         }
     }
 }
