@@ -5,11 +5,16 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
+
 public class Bomb extends Entity {
 
     private int delay = 30;
     private double diffX = 0;
     private double diffY = 0;
+    private final String path = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\explosion.WAV";
 
     private GraphicsContext graphicsContext;
 
@@ -31,7 +36,7 @@ public class Bomb extends Entity {
             remove(this);
         } else {
             status++;
-            //System.out.println(status);
+            System.out.println(status);
             if (status % delay == 0) {
                 this.img = Sprite.bomb.getFxImage();
             }
@@ -40,6 +45,9 @@ public class Bomb extends Entity {
             }
             if (status % delay == 20) {
                 this.img = Sprite.bomb_2.getFxImage();
+            }
+            if (status == 120) {
+                PlayMusic(path);
             }
             if (status > 120) {
                 this.img = Sprite.bomb_exploded.getFxImage();
@@ -53,6 +61,8 @@ public class Bomb extends Entity {
         }
 
     }
+
+
 
 
 }
