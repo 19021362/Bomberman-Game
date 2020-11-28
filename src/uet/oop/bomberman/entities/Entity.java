@@ -11,6 +11,9 @@ import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.util.List;
 
 public abstract class Entity {
@@ -79,6 +82,21 @@ public abstract class Entity {
             }
         }
         return check;
+    }
+
+    public void PlayMusic(String path) {
+        String filename = path;
+        try
+        {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(new File(filename)));
+            clip.start();
+            Thread.sleep(clip.getMicrosecondLength()/100000);
+        }
+        catch (Exception exc)
+        {
+            exc.printStackTrace(System.out);
+        }
     }
 
 }
