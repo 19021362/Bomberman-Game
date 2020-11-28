@@ -52,10 +52,8 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
-        loadMap.load();
+        loadMap.load(2);
 
-        Mob bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        //Entity balloon = new Balloon(1, 2, Sprite.balloom_left1.getFxImage());
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -65,11 +63,10 @@ public class BombermanGame extends Application {
             }
         };
 
-        PlayMusic();
+        //PlayMusic();
 
         timer.start();
 
-        loadMap.getMob().add(bomberman);
 
         for (int i = 0; i < loadMap.getMob().size(); i++) {
             if (loadMap.getMob().get(i) != null) {
@@ -77,7 +74,7 @@ public class BombermanGame extends Application {
             }
         }
 
-        //PlayMusic();
+        PlayMusic();
     }
 
 
@@ -87,13 +84,21 @@ public class BombermanGame extends Application {
                 loadMap.getMob().get(i).update();
             }
         }
-        loadMap.getStillObjects().forEach(Entity::update);
+        for (int i = 0; i < loadMap.getStillObjects().size(); i++) {
+            if (loadMap.getStillObjects().get(i) != null) {
+                loadMap.getStillObjects().get(i).update();
+            }
+        }
     }
 
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        loadMap.getStillObjects().forEach(g -> g.render(gc));
+        for (int i = 0; i < loadMap.getStillObjects().size(); i++) {
+            if (loadMap.getStillObjects().get(i) != null) {
+                loadMap.getStillObjects().get(i).render(gc);
+            }
+        }
         for (int i = 0; i < loadMap.getMob().size(); i++) {
             if (loadMap.getMob().get(i) != null) {
                 loadMap.getMob().get(i).render(gc);
