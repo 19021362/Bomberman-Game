@@ -36,6 +36,7 @@ public class Balloom extends Mob {
         } else {
             if (animation == 30) {
                 remove(this);
+                loadMap.setNumEnemy(-1);
             } else {
                 animation++;
                 kill();
