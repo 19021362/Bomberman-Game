@@ -25,9 +25,11 @@ public class Bomber extends Mob {
     private int side_v = 1;              // Hướng chạy hiện tại. 1: Trên -> Dưới. -1: Dưới -> Trên
 
     private final String dead_fx = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\lose.WAV";
+    private final String new_fx = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\newLife.WAV";
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
+        setBlood(2);
     }
 
     @Override
@@ -71,8 +73,10 @@ public class Bomber extends Mob {
                 }
             }
             if (!live) {
+                PlayMusic(new_fx);
                 blood--;
                 setLive(true);
+                setPosition(1, 1);
             }
         } else {
             if (animation == 30) {
@@ -223,4 +227,5 @@ public class Bomber extends Mob {
     public void boostSpeed() {
         this.speed++;
     }
+
 }
