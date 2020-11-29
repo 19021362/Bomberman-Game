@@ -56,4 +56,5 @@ public abstract class Mob extends Entity {
     public boolean getLive() {
         return this.live;
     }
+
 }
