@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.mob.Balloom;
 import uet.oop.bomberman.entities.mob.Bomber;
 import uet.oop.bomberman.entities.mob.Mob;
 import uet.oop.bomberman.graphics.Sprite;
@@ -25,8 +26,12 @@ public class BombermanGame extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
+    private boolean nextLevel = false;
+    private int level = 1;
     //private List<Entity> entities = new ArrayList<>();
     //private List<Entity> stillObjects = new ArrayList<>();
+
+
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -34,8 +39,6 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-
-        // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
@@ -46,35 +49,40 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
 
-
+        gameLoop(scene);
 
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
 
-        loadMap.load(2);
 
+
+        PlayMusic(true);
+    }
+
+    private void gameLoop(Scene scene) {
+        loadMap.load(level);
+        Entity bomber = null;
+        for (int i = 0; i < loadMap.getMob().size(); i++) {
+            if (loadMap.getMob().get(i) instanceof Bomber) {
+                bomber = loadMap.getMob().get(i);
+            }
+        }
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 render();
                 update();
+                if (!loadMap.gameOn()) {
+                    this.stop();
+                }
             }
         };
 
-        //PlayMusic();
-
         timer.start();
 
-
-        for (int i = 0; i < loadMap.getMob().size(); i++) {
-            if (loadMap.getMob().get(i) != null) {
-                loadMap.getMob().get(i).move(scene);
-            }
-        }
-
-        PlayMusic();
+        bomber.move(scene);
     }
 
 
@@ -106,19 +114,28 @@ public class BombermanGame extends Application {
         }
     }
 
-    private static void PlayMusic() {
+    private static void PlayMusic(boolean play) {
         String filename = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\background.WAV";
         try
         {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(new File(filename)));
             clip.loop(Clip.LOOP_CONTINUOUSLY);
-            clip.start();
-            Thread.sleep(clip.getMicrosecondLength()/1000000);
+            if (play) {
+                clip.start();
+                Thread.sleep(clip.getMicrosecondLength() / 1000000);
+            } else {
+                clip.close();
+            }
         }
         catch (Exception exc)
         {
             exc.printStackTrace(System.out);
         }
     }
+
+    public boolean isNextLevel() {
+        return nextLevel;
+    }
+
 }

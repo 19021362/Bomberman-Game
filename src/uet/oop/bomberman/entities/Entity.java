@@ -98,4 +98,8 @@ public abstract class Entity {
         }
     }
 
+    public void setPosition(int x, int y) {
+        this.x = x * Sprite.SCALED_SIZE;
+        this.y = y * Sprite.SCALED_SIZE;
+    }
 }

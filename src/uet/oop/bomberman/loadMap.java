@@ -26,7 +26,7 @@ public class loadMap {
     private static List<Entity> stillObjects = new ArrayList<>();
     private static List<Entity> mob = new ArrayList<>();
 
-
+    private static int numEnemy = 0;
 
     /**
      * ĐỌc bản đồ từ file.
@@ -48,10 +48,11 @@ public class loadMap {
                         stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
                         object = new Brick(i, j, Sprite.brick.getFxImage());
                     } else if (s.charAt(i) == 'x') {
-                        object = new Portal(i, j, Sprite.portal.getFxImage());
+                        object = new Portal(i, j, Sprite.grass.getFxImage());
                     } else if (s.charAt(i) == 'b') {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
                         mob.add(new Balloom(i, j, Sprite.balloom_left1.getFxImage()));
+                        numEnemy++;
                     } else if (s.charAt(i) == 'i') {
                         stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
                         if (k == 0) {
@@ -100,9 +101,41 @@ public class loadMap {
     private static String getInput(int level) {
         if (level == 1) {
             return input_level1;
-        } else {
+        } else if (level == 2) {
             return input_Level2;
+        } else {
+            return input_level1;
         }
     }
 
+    public static void clear() {
+        stillObjects.clear();
+        mob.removeIf(o -> !(o instanceof Bomber));
+        System.out.println(stillObjects.size() + " " + mob.size());
+
+        for (Entity o : mob) {
+            if (o instanceof Bomber) {
+                o.setPosition(1, 1);
+            }
+        }
+    }
+
+    public static void setNumEnemy(int numEnemy) {
+        loadMap.numEnemy += numEnemy;
+    }
+
+    public static int getNumEnemy() {
+        return numEnemy;
+    }
+
+    public static boolean gameOn() {
+        boolean check = false;
+        for (Entity o : mob) {
+            if (o instanceof Bomber) {
+                check = true;
+                break;
+            }
+        }
+        return check;
+    }
 }
