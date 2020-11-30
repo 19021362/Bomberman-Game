@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.explosion;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.tile.Brick;
 import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
@@ -59,15 +60,38 @@ public class Direction extends Entity {
                     break;
             }
             exp = new Explosion(_x, _y, null, dir, last);
-            if (exp.destroyable()) {
-                loadMap.add(exp);
+            int num = Destroyable(exp);
+            if (num == 2) {
+                loadMap.getStillObjects().add(exp);
                 list_exp.add((Explosion) exp);
+            } else if (num == 1) {
+                exp = new Explosion(_x, _y, null, dir, true);
+                loadMap.getStillObjects().add(exp);
+                list_exp.add((Explosion) exp);
+                break;
             } else {
                 break;
             }
         }
         return list_exp.size();
     }
+
+    private int Destroyable(Entity e) {
+        int num = 2;
+        List<Entity> obj = loadMap.getStillObjects();
+        for (Entity o : obj) {
+            if (o instanceof Wall && e.collision(o)) {
+                num = 0;
+                break;
+            }
+            if (o instanceof Brick && e.collision(o)) {
+                num = 1;
+                break;
+            }
+        }
+        return num;
+    }
+
 
     public List<Explosion> getList_exp() {
         return list_exp;

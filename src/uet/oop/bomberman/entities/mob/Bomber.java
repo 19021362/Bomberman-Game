@@ -9,6 +9,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.explosion.Bomb;
 import uet.oop.bomberman.entities.explosion.Direction;
 import uet.oop.bomberman.entities.explosion.Explosion;
+import uet.oop.bomberman.graphics.Sound;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
@@ -16,18 +17,20 @@ import java.util.List;
 
 public class Bomber extends Mob {
 
-    private int speed = 4;
+    private int speed = 2;
+    private int dx = 0;
+    private int dy = 0;
+
     private int length_bomb = 1;
     private int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
     private final int maxBomb = 1;
     public static int recentBomb = 0;
 
+    private final int maxBomb = 2;
+    public static int recentBomb = 0;
 
     private int side_h = 1;              // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
-    private int side_v = 1;              // Hướng chạy hiện tại. 1: Trên -> Dưới. -1: Dưới -> Trên
-
-    private final String dead_fx = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\lose.WAV";
-    private final String new_fx = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\newLife.WAV";
+    private int side_v = 1;             // Hướng chạy hiện tại. 1: Trên -> Dưới. -1: Dưới -> Trên
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
@@ -37,6 +40,13 @@ public class Bomber extends Mob {
     @Override
     public void update() {
         if (blood > 0) {
+            if (!collision()) {
+                x += dx;
+                y += dy;
+            } else {
+                setPosition(((x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE),
+                        ((y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE));
+            }
             if (side_h == 1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
                 if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
                     this.img = Sprite.player_right.getFxImage();
@@ -75,14 +85,16 @@ public class Bomber extends Mob {
                 }
             }
             if (!live) {
-                PlayMusic(new_fx);
+                PlayMusic(Sound.new_fx);
                 blood--;
-                setLive(true);
-                setPosition(1, 1);
+                if (blood > 0) {
+                    setLive(true);
+                    setPosition(1, 1);
+                }
             }
         } else {
             if (animation == 30) {
-                PlayMusic(dead_fx);
+                PlayMusic(Sound.dead_fx);
                 remove(this);
             } else {
                 animation++;
@@ -108,7 +120,20 @@ public class Bomber extends Mob {
             scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent event) {
-                    key_handle(event, 2);
+                    KeyCode keyCode = event.getCode();
+                    switch (keyCode) {
+                        case RIGHT:
+                        case LEFT:
+                            status++;
+                            dx = 0; break;
+                        case UP:
+                        case DOWN:
+                            status++;
+                            dy = 0; break;
+                        default:
+                            dx = 0;
+                            dy = 0;
+                    }
                 }
             });
         }
@@ -125,10 +150,7 @@ public class Bomber extends Mob {
                     side_h = 1;
                     status = 0;
                 }
-                x += speed;
-                if (collision()) {
-                    x -= speed;
-                }
+                dx = speed;
                 break;
             case LEFT:
                 side_v = 0;
@@ -138,10 +160,7 @@ public class Bomber extends Mob {
                     side_h = -1;
                     status = 0;
                 }
-                x -= speed;
-                if (collision()) {
-                    x += speed;
-                }
+                dx = -speed;
                 break;
             case UP:
                 side_h = 0;
@@ -151,10 +170,7 @@ public class Bomber extends Mob {
                     side_v = -1;
                     status = 0;
                 }
-                y -= speed;
-                if (collision()) {
-                    y += speed;
-                }
+                dy = -speed;
                 break;
             case DOWN:
                 side_h = 0;
@@ -164,18 +180,13 @@ public class Bomber extends Mob {
                     side_v = 1;
                     status = 0;
                 }
-                y += speed;
-                if (collision()) {
-                    y -= speed;
-                }
+                dy = speed;
                 break;
             case SPACE:
-                if (speed == this.speed) {
-                    if(recentBomb < maxBomb){
-                        recentBomb++;
-                        creatBomb();
-                        break;
-                    }
+                if(recentBomb < maxBomb){
+                    recentBomb++;
+                    creatBomb();
+                    break;
                 }
             default:
                 check();
@@ -196,11 +207,11 @@ public class Bomber extends Mob {
         Entity left = new Direction(_x, _y, null, length_bomb, 4);
         Entity down = new Direction(_x, _y, null, length_bomb, 2);
         Entity top = new Direction(_x, _y, null, length_bomb, 8);
-        loadMap.add(bomb);
-        loadMap.add(right);
-        loadMap.add(left);
-        loadMap.add(down);
-        loadMap.add(top);
+        loadMap.getStillObjects().add(bomb);
+        loadMap.getStillObjects().add(right);
+        loadMap.getStillObjects().add(left);
+        loadMap.getStillObjects().add(down);
+        loadMap.getStillObjects().add(top);
     }
 
     @Override
