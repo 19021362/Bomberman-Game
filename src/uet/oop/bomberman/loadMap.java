@@ -107,7 +107,6 @@ public class loadMap {
     public static void clear() {
         stillObjects.clear();
         mob.removeIf(o -> !(o instanceof Bomber));
-        System.out.println(stillObjects.size() + " " + mob.size());
 
         for (Entity o : mob) {
             if (o instanceof Bomber) {
