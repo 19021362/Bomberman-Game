@@ -23,8 +23,6 @@ public class Bomber extends Mob {
 
     private int length_bomb = 1;
     private int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
-    private final int maxBomb = 1;
-    public static int recentBomb = 0;
 
     private final int maxBomb = 2;
     public static int recentBomb = 0;
