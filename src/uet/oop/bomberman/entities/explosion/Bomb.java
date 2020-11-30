@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.explosion;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.mob.Bomber;
 import uet.oop.bomberman.entities.mob.Mob;
 import uet.oop.bomberman.graphics.Sound;
 import uet.oop.bomberman.graphics.Sprite;
@@ -37,6 +38,7 @@ public class Bomb extends Entity {
     @Override
     public void update() {
         if (status == 150) {
+            Bomber.recentBomb--;
             remove(this);
         } else {
             status++;
