@@ -11,6 +11,7 @@ import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.mob.Balloom;
 import uet.oop.bomberman.entities.mob.Bomber;
 import uet.oop.bomberman.entities.mob.Mob;
+import uet.oop.bomberman.graphics.Sound;
 import uet.oop.bomberman.graphics.Sprite;
 
 import javax.sound.sampled.AudioSystem;
@@ -74,15 +75,29 @@ public class BombermanGame extends Application {
             public void handle(long l) {
                 render();
                 update();
+                if (loadMap.isNextLevel()) {
+                    loadMap.clear();
+                    loadMap.setNextLevel(false);
+                    level++;
+                    loadMap.load(level);
+                }
                 if (!loadMap.gameOn()) {
                     this.stop();
                 }
             }
         };
 
+        move(scene);
         timer.start();
 
-        bomber.move(scene);
+    }
+
+    private void move(Scene scene) {
+        for (Entity o : loadMap.getMob()) {
+            if (o instanceof Bomber) {
+                o.move(scene);
+            }
+        }
     }
 
 
@@ -115,11 +130,10 @@ public class BombermanGame extends Application {
     }
 
     private static void PlayMusic(boolean play) {
-        String filename = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\background.WAV";
         try
         {
             Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(new File(filename)));
+            clip.open(AudioSystem.getAudioInputStream(new File(Sound.background)));
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             if (play) {
                 clip.start();
