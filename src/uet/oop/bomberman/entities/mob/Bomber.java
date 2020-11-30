@@ -24,6 +24,8 @@ public class Bomber extends Mob {
     private int length_bomb = 1;
     private int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
 
+    private final int maxBomb = 2;
+    public static int recentBomb = 0;
 
     private int side_h = 1;              // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
     private int side_v = 1;             // Hướng chạy hiện tại. 1: Trên -> Dưới. -1: Dưới -> Trên
@@ -179,8 +181,11 @@ public class Bomber extends Mob {
                 dy = speed;
                 break;
             case SPACE:
-                creatBomb();
-                break;
+                if(recentBomb < maxBomb){
+                    recentBomb++;
+                    creatBomb();
+                    break;
+                }
             default:
                 check();
         }
