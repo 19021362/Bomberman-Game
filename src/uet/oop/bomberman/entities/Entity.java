@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.entities.mob.Mob;
+import uet.oop.bomberman.entities.tile.Brick;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.entities.tile.item.Item;
@@ -69,18 +70,6 @@ public abstract class Entity {
 
     public void setCanPass(boolean canPass) {
         this.canPass = canPass;
-    }
-
-    public boolean destroyable() {
-        boolean check = true;
-        List<Entity> obj = loadMap.getStillObjects();
-        for (Entity o : obj) {
-            if (o instanceof Wall && this.collision(o)) {
-                check = false;
-                break;
-            }
-        }
-        return check;
     }
 
     public void PlayMusic(String path) {
