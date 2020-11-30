@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Balloom extends Mob {
-    private int speed = 1;
+    private int speed = 2;
     private int dir = 0;
     private int side_h = 1;     // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái.
     private Random rd = new Random();
