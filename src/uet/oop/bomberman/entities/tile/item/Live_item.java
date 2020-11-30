@@ -17,7 +17,6 @@ public class Live_item extends Item {
         for (int i = 0; i < loadMap.getMob().size(); i++) {
             if (loadMap.getMob().get(i) instanceof Bomber) {
                 ((Bomber) loadMap.getMob().get(i)).setBlood(1);
-                System.out.println(((Bomber) loadMap.getMob().get(i)).getBlood());
             }
         }
     }
