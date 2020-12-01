@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.explosion.Bomb;
 import uet.oop.bomberman.entities.explosion.Direction;
@@ -40,9 +41,6 @@ public class Bomber extends Mob {
             if (!collision()) {
                 x += dx;
                 y += dy;
-            } else {
-                setPosition(((x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE),
-                        ((y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE));
             }
             if (side_h == 1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
                 if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
@@ -218,13 +216,14 @@ public class Bomber extends Mob {
 
     @Override
     public boolean collision() {
+        Rectangle rect = new Rectangle((this.x - 1 + dx), (this.y - 1 + dy), 24, 28);
         boolean check = false;
         for (Entity o : loadMap.getStillObjects()) {
             if (o instanceof Bomb) {
                 check = false;
                 break;
             } else {
-                if (o!= null && !o.canPass && this.collision(o)) {
+                if (o!= null && !o.canPass && rect.intersects(o.getBound().getBoundsInParent())) {
                     check = true;
                     break;
                 }

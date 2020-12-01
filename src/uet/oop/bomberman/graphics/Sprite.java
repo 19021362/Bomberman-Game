@@ -20,6 +20,11 @@ public class Sprite {
 	private int _realHeight;
 	private SpriteSheet _sheet;
 
+
+	public static final String bgd = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\textures\\background.png";
+	public static final String gOver = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\textures\\gameover.jpg";
+	public static final String gWin = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\textures\\winner.jpg";
+
 	/*
 	|--------------------------------------------------------------------------
 	| Board sprites
