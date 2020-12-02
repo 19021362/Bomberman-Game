@@ -31,7 +31,8 @@ public class loadMap {
     private static String input = "";
     private static boolean nextLevel = false;
     private static List<Entity> stillObjects = new ArrayList<>();
-    public static List<Entity> mob = new ArrayList<>();
+    private static List<Entity> mob = new ArrayList<>();
+    private static Bomber bomber1;
 
     private static int numEnemy = 0;
 
@@ -67,7 +68,7 @@ public class loadMap {
                         object = new Portal(i, j, Sprite.grass.getFxImage());
                     } else if (s.charAt(i) == 'p') { // Player Bomber phai la mod dau tien trong list de Oneal co the truy cap toa do de duoi
                         object = new Grass(i, j, Sprite.grass.getFxImage());
-                        Bomber bomber1 = new Bomber(i, j, Sprite.player_right_2.getFxImage());
+                        bomber1 = new Bomber(i, j, Sprite.player_right_2.getFxImage());
                         mob.add(bomber1);
                     } else if (s.charAt(i) == 'b') {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
@@ -99,6 +100,9 @@ public class loadMap {
         return mob;
     }
 
+    public static Bomber getBomber1() {
+        return bomber1;
+    }
 
     public static void remove(Entity o) {
         stillObjects.remove(o);

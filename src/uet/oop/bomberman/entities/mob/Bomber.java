@@ -39,7 +39,7 @@ public class Bomber extends Mob {
     }
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
-        setBlood(20000);
+        setBlood(2);
     }
 
     @Override

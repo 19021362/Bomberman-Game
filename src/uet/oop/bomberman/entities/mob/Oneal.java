@@ -91,12 +91,12 @@ public class Oneal extends Mob {
     }
 
 
-    public boolean chaseTheBomber() {
+    public boolean chaseTheBomber() {  //loadMap.getBomber1()
         boolean chasingBomber = false;
 
         //Nếu Bomber ở cùng hàng ngang hoặc hàng dọc  // Nếu trong phạm vi tìm kiếm  // loadMap.mob.get(0) = Bomber
-        if (Math.abs(loadMap.mob.get(0).getX() - x) < 3500                  // 3500: Đuổi toàn bản đồ. Giảm tầm đuổi = cách giảm 3500 và 3000 dưới kia xuống
-                || Math.abs(loadMap.mob.get(0).getY() - y) < 3500) {
+        if (Math.abs(loadMap.getBomber1().getX() - x) < 3500                  // 3500: Đuổi toàn bản đồ. Giảm tầm đuổi = cách giảm 3500 và 3000 dưới kia xuống
+                || Math.abs(loadMap.getBomber1().getY() - y) < 3500) {
             chasingBomber = true;
 
             if (bomberIsNotMoving() == true && checkCollision == 2) {  // Nếu Bomber đứng im và Oneal đang kẹt ở góc ( va chạm 2 hướng) thì ko đuổi nữa
@@ -104,8 +104,8 @@ public class Oneal extends Mob {
             }
             System.out.println(bomberIsNotMoving());
 
-            int distanceX = loadMap.mob.get(0).getX() - x;
-            int distanceY = loadMap.mob.get(0).getY() - y;
+            int distanceX = loadMap.getBomber1().getX() - x;
+            int distanceY = loadMap.getBomber1().getY() - y;
 
             int sideX = signOf(distanceX);
             int sideY = signOf(distanceY);  //System.out.println(sideX + " " + sideY + "--------------");
@@ -189,7 +189,7 @@ public class Oneal extends Mob {
 
     public boolean bomberIsNotMoving() {
         Bomber bomber = new Bomber();
-        bomber = (Bomber)loadMap.mob.get(0);
+        bomber = (Bomber)loadMap.getBomber1();
 
         if (bomber.getDx() == 0 && bomber.getDy() == 0) {
             return true;

@@ -1,4 +1,4 @@
-package uet.oop.bomberman;
+package uet.oop.bomberman; //--module-path F:\JavaFX\javafx-sdk-11.0.2\lib --add-modules javafx.controls,javafx.fxml
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
