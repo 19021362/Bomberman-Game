@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -36,10 +37,14 @@ public class BombermanGame extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
+
     private Button exit = new Button("EXIT");
     private Button start = new Button("START");
     private Button again = new Button("AGAIN");
 
+    private Label labelBlood = new Label();
+    private Label labelLevel = new Label();
+    private Label live = new Label();
 
     private boolean nextLevel = false;
     public static int level = 1;
@@ -69,11 +74,8 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root);
 
         initBGD(gc, Sprite.bgd);
+        setButton();
 
-        exit.setFont(Font.font(24));
-        exit.setMinSize(width_b * 2, height_b * 2);
-        exit.setLayoutX(((WIDTH * Sprite.SCALED_SIZE) / 2) - width_b);
-        exit.setLayoutY(400);
         exit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -81,10 +83,6 @@ public class BombermanGame extends Application {
             }
         });
 
-        start.setFont(Font.font(24));
-        start.setMinSize(width_b * 2, height_b * 2);
-        start.setLayoutX(((WIDTH * Sprite.SCALED_SIZE) / 2) - width_b);
-        start.setLayoutY(320);
         start.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -96,12 +94,6 @@ public class BombermanGame extends Application {
             }
         });
 
-        again.setFont(Font.font(24));
-        again.setMinSize(width_b * 2, height_b * 2);
-        again.setLayoutX(((WIDTH * Sprite.SCALED_SIZE) / 2) - width_b);
-        again.setLayoutY(320);
-        again.setDisable(true);
-        again.setVisible(false);
         again.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -242,6 +234,26 @@ public class BombermanGame extends Application {
                 Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT + 20, false, false);
 
         gc.drawImage(image, 0, 0);
+    }
+
+    public void setButton() {
+        exit.setFont(Font.font(24));
+        exit.setMinSize(width_b * 2, height_b * 2);
+        exit.setLayoutX(((WIDTH * Sprite.SCALED_SIZE) / 2) - width_b);
+        exit.setLayoutY(400);
+
+        start.setFont(Font.font(24));
+        start.setMinSize(width_b * 2, height_b * 2);
+        start.setLayoutX(((WIDTH * Sprite.SCALED_SIZE) / 2) - width_b);
+        start.setLayoutY(320);
+
+        again.setFont(Font.font(24));
+        again.setMinSize(width_b * 2, height_b * 2);
+        again.setLayoutX(((WIDTH * Sprite.SCALED_SIZE) / 2) - width_b);
+        again.setLayoutY(320);
+        again.setDisable(true);
+        again.setVisible(false);
+
     }
 
     public boolean isNextLevel() {
