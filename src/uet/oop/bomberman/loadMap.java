@@ -3,6 +3,7 @@ package uet.oop.bomberman;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.mob.Balloom;
 import uet.oop.bomberman.entities.mob.Bomber;
+import uet.oop.bomberman.entities.mob.Oneal;
 import uet.oop.bomberman.entities.tile.Brick;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Portal;
@@ -63,6 +64,10 @@ public class loadMap {
                     } else if (s.charAt(i) == 'b') {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
                         mob.add(new Balloom(i, j, Sprite.balloom_left1.getFxImage()));
+                        numEnemy++;
+                    } else if (s.charAt(i) == 'o') {
+                        object = new Grass(i, j, Sprite.grass.getFxImage());
+                        mob.add(new Oneal(i, j, Sprite.oneal_left1.getFxImage()));
                         numEnemy++;
                     } else if (s.charAt(i) == 'p') {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
