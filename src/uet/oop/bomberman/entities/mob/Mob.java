@@ -13,6 +13,8 @@ public abstract class Mob extends Entity {
     protected int blood = 1;
     protected boolean live = true;
 
+    public Mob() {}
+
     public Mob(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }

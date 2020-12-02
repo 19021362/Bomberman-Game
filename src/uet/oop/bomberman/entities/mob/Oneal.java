@@ -16,10 +16,13 @@ import java.util.List;
 import java.util.Random;
 
 public class Oneal extends Mob {
-    private int speed = 1;
+    private int speed = 3;
     private int dir = 0;
     private int side_h = 1;     // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái.
+    private int checkCollision = 0;
     private Random rd = new Random();
+
+
     public Oneal(int x, int y, Image img) {
         super( x, y, img);
     }
@@ -67,61 +70,17 @@ public class Oneal extends Mob {
     }
 
     public void move() {
-        // Đuổi theo
-        if(status % 20 == 0) {
-            System.out.println(loadMap.mob.get(0).getX() + " " + x);
-            System.out.println(loadMap.mob.get(0).getY() + " " + y);
-            System.out.println("\n");
-        }
+        status++;
 
+        //Gọi hàm đuổi
         boolean chasingBomber = chaseTheBomber();
 
-        if (chasingBomber == false) {
-            switch (dir){       // Khi va cham wall, brick, bomb thi chuyen huong di chuyen ngau nhien
-                case 0:
-                    if(side_h == 1) {status++;}
-                    else{
-                        side_h = 1;
-                        status = 0;
-                    }
-                    x += speed;
-                    if (collision()) {
-                        x -= speed;
-                        dir = Math.abs(rd.nextInt() % 4);
-                    }
-                    break;
-                case 1:
-                    status++;
-                    y += speed;
-                    if (collision()) {
-                        y -= speed;
-                        dir = Math.abs(rd.nextInt() % 4);
-                    }
-                    break;
-                case 2:
-                    if(side_h == -1) {status++;}
-                    else{
-                        side_h = -1;
-                        status = 0;
-                    }
-                    x -= speed;
-                    if (collision()) {
-                        x += speed;
-                        dir = Math.abs(rd.nextInt() % 4);
-                    }
-                    break;
-                case 3:
-                    status++;
-                    y -= speed;
-                    if (collision()) {
-                        y += speed;
-                        dir = Math.abs(rd.nextInt() % 4);
-                    }
-                    break;
-            }
+        if (chasingBomber == false) {  //Nếu ngoài tầm đuổi ( đang không đuổi)
+            randomMove();
         }
 
-        if (status % 50 == 0) {  // Tăng tốc chạy bất thường
+        // Tăng tốc chạy bất thường
+        if (status % 50 == 0) {
             speed = Math.abs(rd.nextInt()) % 3 + 1;
         }
     }
@@ -131,40 +90,110 @@ public class Oneal extends Mob {
         img = Sprite.movingSprite(Sprite.oneal_dead, Sprite.mob_dead2, Sprite.mob_dead3, animation, 50).getFxImage();
     }
 
+
     public boolean chaseTheBomber() {
-        status++;
-        boolean chasing = false;
-        if (Math.abs(loadMap.mob.get(0).getX() - x) < 35) { // Nếu cùng hàng ngang với bomber; 35: Chiều rộng tìm kiếm bomber
-            chasing = true;
-            if (loadMap.mob.get(0).getY() > y) { // Nếu bomber ở bên phải ( so với Oneal
-                y += speed;
+        boolean chasingBomber = false;
+
+        //Nếu Bomber ở cùng hàng ngang hoặc hàng dọc  // Nếu trong phạm vi tìm kiếm  // loadMap.mob.get(0) = Bomber
+        if (Math.abs(loadMap.mob.get(0).getX() - x) < 3500                  // 3500: Đuổi toàn bản đồ. Giảm tầm đuổi = cách giảm 3500 và 3000 dưới kia xuống
+                || Math.abs(loadMap.mob.get(0).getY() - y) < 3500) {
+            chasingBomber = true;
+
+            if (bomberIsNotMoving() == true && checkCollision == 2) {  // Nếu Bomber đứng im và Oneal đang kẹt ở góc ( va chạm 2 hướng) thì ko đuổi nữa
+                return false;
+            }
+            System.out.println(bomberIsNotMoving());
+
+            int distanceX = loadMap.mob.get(0).getX() - x;
+            int distanceY = loadMap.mob.get(0).getY() - y;
+
+            int sideX = signOf(distanceX);
+            int sideY = signOf(distanceY);  //System.out.println(sideX + " " + sideY + "--------------");
+
+            checkCollision = 0;
+
+            if (Math.abs(distanceX) < 3000) {
+                y += sideY * speed;
                 if (collision()) {
-                    y -= speed;
-                }
-            } else if (loadMap.mob.get(0).getY() < y) { // Nếu bomber ở bên trái
-                y -= speed;
-                if (collision()) {
-                    y += speed;
+                    y -= sideY * speed;
+                    checkCollision++;
                 }
             }
+            if (Math.abs(distanceY) < 3000) {
+                x += sideX * speed;
+                if (collision()) {
+                    x -= sideX * speed;
+                    checkCollision++;
+                }
+            }
+
         }
-        if (Math.abs(loadMap.mob.get(0).getY() - y) < 35) { // Nếu cùng hàng dọc với bomber
-            chasing = true;
-            if (loadMap.mob.get(0).getX() > x) { // Nếu bomber ở bên trên
+
+        return chasingBomber;
+    }
+
+    public void randomMove() {
+        switch (dir){       // Khi va cham wall, brick, bomb thi chuyen huong di chuyen ngau nhien
+            case 0:
+                if(side_h == 1) {status++;}
+                else{
+                    side_h = 1;
+                    status = 0;
+                }
                 x += speed;
                 if (collision()) {
                     x -= speed;
+                    dir = Math.abs(rd.nextInt() % 4);
                 }
-            } else if (loadMap.mob.get(0).getX() < x) { // Nếu bomber ở bên dưới
+                break;
+            case 1:
+                status++;
+                y += speed;
+                if (collision()) {
+                    y -= speed;
+                    dir = Math.abs(rd.nextInt() % 4);
+                }
+                break;
+            case 2:
+                if(side_h == -1) {status++;}
+                else{
+                    side_h = -1;
+                    status = 0;
+                }
                 x -= speed;
                 if (collision()) {
                     x += speed;
+                    dir = Math.abs(rd.nextInt() % 4);
                 }
-            }
+                break;
+            case 3:
+                status++;
+                y -= speed;
+                if (collision()) {
+                    y += speed;
+                    dir = Math.abs(rd.nextInt() % 4);
+                }
+                break;
         }
-        return chasing;
     }
 
+    public int signOf (int inputInt) {
+        if (inputInt > 0) {
+            return 1;
+        } else if (inputInt < 0) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 
+    public boolean bomberIsNotMoving() {
+        Bomber bomber = new Bomber();
+        bomber = (Bomber)loadMap.mob.get(0);
 
+        if (bomber.getDx() == 0 && bomber.getDy() == 0) {
+            return true;
+        }
+        return false;
+    }
 }

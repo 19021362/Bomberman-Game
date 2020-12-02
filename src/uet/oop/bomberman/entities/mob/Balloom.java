@@ -28,7 +28,7 @@ public class Balloom extends Mob {
     public void update() {
         if (blood > 0) {
             calculateDir();
-            move();
+            randomMove();
             if (!live) {
                 blood--;
                 setLive(true);
@@ -66,7 +66,7 @@ public class Balloom extends Mob {
         }
     }
 
-    public void move() {
+    public void randomMove() {
         switch (dir){       // Khi va cham wall, brick, bomb thi chuyen huong di chuyen ngau nhien
             case 0:
                 if(side_h == 1) {status++;}

@@ -17,8 +17,8 @@ import java.util.List;
 
 public class Bomber extends Mob {
 
-    private final int maxSpeed = 8;
-    private int speed = 2;
+    private final int maxSpeed = 6;
+    private int speed = 4;
     private int dx = 0;
     private int dy = 0;
 
@@ -35,6 +35,8 @@ public class Bomber extends Mob {
     private int side_h = 1;              // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
     private int side_v = 1;             // Hướng chạy hiện tại. 1: Trên -> Dưới. -1: Dưới -> Trên
 
+    public Bomber() {
+    }
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
         setBlood(20000);
@@ -255,5 +257,13 @@ public class Bomber extends Mob {
         if (this.blood < maxBlood) {
             this.blood += blood;
         }
+    }
+
+    public int getDx() {
+        return dx;
+    }
+
+    public int getDy() {
+        return dy;
     }
 }
