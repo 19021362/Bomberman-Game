@@ -42,7 +42,7 @@ public class loadMap {
             while (scanner.hasNextLine()) {
                 String s = scanner.nextLine();
                 for (int  i = 0; i < s.length(); i++) {
-                    int k = Math.abs(rd.nextInt() % 15);
+                    int k = Math.abs(rd.nextInt() % 20);
                     Entity object;
                     if (s.charAt(i) == '#') {
                         object = new Wall(i, j, Sprite.wall.getFxImage());

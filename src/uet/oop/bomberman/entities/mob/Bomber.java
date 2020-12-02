@@ -17,15 +17,20 @@ import java.util.List;
 
 public class Bomber extends Mob {
 
+    private final int maxSpeed = 8;
     private int speed = 2;
     private int dx = 0;
     private int dy = 0;
 
+    private final int maxLength = 5;
     private int length_bomb = 1;
     private int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
 
-    private final int maxBomb = 2;
+    private final int maxBomb = 5;
+    private final int numBomb = 1;
     public static int recentBomb = 0;
+
+    private final int maxBlood = 5;
 
     private int side_h = 1;              // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
     private int side_v = 1;             // Hướng chạy hiện tại. 1: Trên -> Dưới. -1: Dưới -> Trên
@@ -233,11 +238,21 @@ public class Bomber extends Mob {
     }
 
     public void boostLength_bomb() {
-        this.length_bomb++;
+        if (this.length_bomb < maxLength) {
+            this.length_bomb++;
+        }
     }
 
     public void boostSpeed() {
-        this.speed++;
+        if (this.speed < maxSpeed) {
+            this.speed++;
+        }
     }
 
+    @Override
+    public void setBlood(int blood) {
+        if (this.blood < maxBlood) {
+            this.blood += blood;
+        }
+    }
 }
