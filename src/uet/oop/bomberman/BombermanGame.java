@@ -42,7 +42,7 @@ public class BombermanGame extends Application {
 
 
     private boolean nextLevel = false;
-    private int level = 1;
+    public static int level = 1;
     public static final int levelMax = 3;
     //private List<Entity> entities = new ArrayList<>();
     //private List<Entity> stillObjects = new ArrayList<>();
@@ -222,7 +222,7 @@ public class BombermanGame extends Application {
         try
         {
             Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(new File(Sound.background)));
+            clip.open(AudioSystem.getAudioInputStream(new File("C:\\Users\\ASUS\\Downloads\\chrismas.WAV")));
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             if (play) {
                 clip.start();
