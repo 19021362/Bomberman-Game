@@ -24,7 +24,7 @@ public class Bomber extends Mob {
 
     private final int maxLength = 5;
     private int length_bomb = 1;
-    private int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
+    private final int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
 
     private final int maxBomb = 5;
     private final int numBomb = 1;
@@ -221,7 +221,7 @@ public class Bomber extends Mob {
 
     @Override
     public boolean collision() {
-        Rectangle rect = new Rectangle((this.x - 1 + dx), (this.y - 1 + dy), 24, 28);
+        Rectangle rect = new Rectangle((this.x + 1 + dx), (this.y + 1 + dy), 20, 24);
         boolean check = false;
         for (Entity o : loadMap.getStillObjects()) {
             if (o instanceof Bomb) {
@@ -245,7 +245,7 @@ public class Bomber extends Mob {
 
     public void boostSpeed() {
         if (this.speed < maxSpeed) {
-            this.speed++;
+            this.speed += 1;
         }
     }
 
