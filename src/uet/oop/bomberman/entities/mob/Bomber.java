@@ -37,7 +37,7 @@ public class Bomber extends Mob {
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
-        setBlood(2);
+        setBlood(20000);
     }
 
     @Override
@@ -87,6 +87,7 @@ public class Bomber extends Mob {
             if (!live) {
                 PlayMusic(Sound.new_fx);
                 blood--;
+                System.out.println(blood);
                 if (blood > 0) {
                     setLive(true);
                     setPosition(1, 1);

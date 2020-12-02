@@ -222,7 +222,7 @@ public class BombermanGame extends Application {
         try
         {
             Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(new File("C:\\Users\\ASUS\\Downloads\\chrismas.WAV")));
+            clip.open(AudioSystem.getAudioInputStream(new File("F:\\Github\\Bomberman-Game\\res\\sounds\\2016-World-Championship-Login-Screen-League-of-Legends.wav")));
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             if (play) {
                 clip.start();

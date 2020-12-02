@@ -67,7 +67,7 @@ public class Balloom extends Mob {
     }
 
     public void move() {
-        switch (dir){
+        switch (dir){       // Khi va cham wall, brick, bomb thi chuyen huong di chuyen ngau nhien
             case 0:
                 if(side_h == 1) {status++;}
                 else{

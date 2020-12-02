@@ -3,6 +3,7 @@ package uet.oop.bomberman;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.mob.Balloom;
 import uet.oop.bomberman.entities.mob.Bomber;
+import uet.oop.bomberman.entities.mob.Oneal;
 import uet.oop.bomberman.entities.tile.Brick;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Portal;
@@ -20,13 +21,17 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class loadMap {
-    private static String input_level1 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\1.txt";
+    private static String input_level1 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\1.txt"; //F:\
+    private static String input_Level2 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\2.txt";
+    private static String input_Level3 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\3.txt";
+
+    /*private static String input_level1 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\1.txt";
     private static String input_Level2 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\2.txt";
-    private static String input_Level3 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\3.txt";
+    private static String input_Level3 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\3.txt";*/
     private static String input = "";
     private static boolean nextLevel = false;
     private static List<Entity> stillObjects = new ArrayList<>();
-    private static List<Entity> mob = new ArrayList<>();
+    public static List<Entity> mob = new ArrayList<>();
 
     private static int numEnemy = 0;
 
@@ -60,13 +65,18 @@ public class loadMap {
                         object = new Brick(i, j, Sprite.brick.getFxImage());
                     } else if (s.charAt(i) == 'x') {
                         object = new Portal(i, j, Sprite.grass.getFxImage());
+                    } else if (s.charAt(i) == 'p') { // Player Bomber phai la mod dau tien trong list de Oneal co the truy cap toa do de duoi
+                        object = new Grass(i, j, Sprite.grass.getFxImage());
+                        Bomber bomber1 = new Bomber(i, j, Sprite.player_right_2.getFxImage());
+                        mob.add(bomber1);
                     } else if (s.charAt(i) == 'b') {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
                         mob.add(new Balloom(i, j, Sprite.balloom_left1.getFxImage()));
                         numEnemy++;
-                    } else if (s.charAt(i) == 'p') {
+                    } else if (s.charAt(i) == 'o') {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
-                        mob.add(new Bomber(i, j, Sprite.player_right_2.getFxImage()));
+                        mob.add(new Oneal(i, j, Sprite.oneal_left1.getFxImage()));
+                        numEnemy++;
                     } else {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
                     }
