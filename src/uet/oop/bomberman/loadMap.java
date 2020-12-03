@@ -66,7 +66,7 @@ public class loadMap {
                         object = new Brick(i, j, Sprite.brick.getFxImage());
                     } else if (s.charAt(i) == 'x') {
                         object = new Portal(i, j, Sprite.grass.getFxImage());
-                    } else if (s.charAt(i) == 'p') { // Player Bomber phai la mod dau tien trong list de Oneal co the truy cap toa do de duoi
+                    } else if (s.charAt(i) == 'p') {
                         object = new Grass(i, j, Sprite.grass.getFxImage());
                         bomber1 = new Bomber(i, j, Sprite.player_right_2.getFxImage());
                         mob.add(bomber1);
