@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.explosion.Bomb;
 import uet.oop.bomberman.entities.explosion.Direction;
@@ -27,7 +28,7 @@ public class Bomber extends Mob {
     private int length_bomb = 1;
     private int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
 
-    private final int maxBomb = 5;
+    private final int maxBomb = 5 ;
     private final int numBomb = 1;
     public static int recentBomb = 0;
 
@@ -44,6 +45,7 @@ public class Bomber extends Mob {
     @Override
     public void update() {
         if (blood > 0) {
+            BombermanGame.labelBlood.setText("BLOOD: " + this.blood);
             if (!collision()) {
                 x += dx;
                 y += dy;
@@ -255,5 +257,13 @@ public class Bomber extends Mob {
         if (this.blood < maxBlood) {
             this.blood += blood;
         }
+    }
+
+    public int getDx() {
+        return dx;
+    }
+
+    public int getDy() {
+        return dy;
     }
 }
