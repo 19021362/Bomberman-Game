@@ -1,26 +1,18 @@
 package uet.oop.bomberman.entities.mob;
 
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.explosion.Bomb;
-import uet.oop.bomberman.entities.explosion.Explosion;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
-import java.util.List;
+
 import java.util.Random;
 
 public class Oneal extends Mob {
-    private int speed = 3;
+    private int speed = 2;
     private int dir = 0;
     private int side_h = 1;     // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái.
     private int checkCollision = 0;
-    private Random rd = new Random();
+    private final Random rd = new Random();
 
 
     public Oneal(int x, int y, Image img) {
@@ -50,38 +42,30 @@ public class Oneal extends Mob {
 
     void calculateDir(){
         if(side_h == 1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
-            if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
+            if (status % 27 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
                 this.img = Sprite.oneal_right1.getFxImage();
-            } else if (status % 9 == 3) {
+            } else if (status % 27 == 9) {
                 this.img = Sprite.oneal_right2.getFxImage();
-            } else if (status % 9 == 6){
-                this.img = Sprite.oneal_right3.getFxImage();
+            } else if (status % 27 == 18){
+                //this.img = Sprite.oneal_right3.getFxImage();
             }
         }
         if(side_h == -1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
-            if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
+            if (status % 27 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
                 this.img = Sprite.oneal_left1.getFxImage();
-            } else if (status % 9 == 3) {
+            } else if (status % 27 == 9) {
                 this.img = Sprite.oneal_left2.getFxImage();
-            } else if (status % 9 == 6){
+            } else if (status % 27 == 18){
                 this.img = Sprite.oneal_left3.getFxImage();
             }
         }
     }
 
     public void move() {
-        status++;
 
         //Gọi hàm đuổi
-        boolean chasingBomber = chaseTheBomber();
-
-        if (chasingBomber == false) {  //Nếu ngoài tầm đuổi ( đang không đuổi)
+        if (!chaseTheBomber()) {  //Nếu ngoài tầm đuổi ( đang không đuổi)
             randomMove();
-        }
-
-        // Tăng tốc chạy bất thường
-        if (status % 50 == 0) {
-            speed = Math.abs(rd.nextInt()) % 3 + 1;
         }
     }
 
@@ -91,21 +75,20 @@ public class Oneal extends Mob {
     }
 
 
-    public boolean chaseTheBomber() {
+    public boolean chaseTheBomber() {  //loadMap.getBomber1()
         boolean chasingBomber = false;
 
         //Nếu Bomber ở cùng hàng ngang hoặc hàng dọc  // Nếu trong phạm vi tìm kiếm  // loadMap.mob.get(0) = Bomber
-        if (Math.abs(loadMap.getMob().get(0).getX() - x) < 3500                  // 3500: Đuổi toàn bản đồ. Giảm tầm đuổi = cách giảm 3500 và 3000 dưới kia xuống
-                || Math.abs(loadMap.getMob().get(0).getY() - y) < 3500) {
+        if (Math.abs(loadMap.getBomber1().getX() - x) < 3500                  // 3500: Đuổi toàn bản đồ. Giảm tầm đuổi = cách giảm 3500 và 3000 dưới kia xuống
+                || Math.abs(loadMap.getBomber1().getY() - y) < 3500) {
             chasingBomber = true;
 
-            if (bomberIsNotMoving() == true && checkCollision == 2) {  // Nếu Bomber đứng im và Oneal đang kẹt ở góc ( va chạm 2 hướng) thì ko đuổi nữa
+            if (bomberIsNotMoving() && checkCollision == 2) {  // Nếu Bomber đứng im và Oneal đang kẹt ở góc ( va chạm 2 hướng) thì ko đuổi nữa
                 return false;
             }
-            System.out.println(bomberIsNotMoving());
 
-            int distanceX = loadMap.getMob().get(0).getX() - x;
-            int distanceY = loadMap.getMob().get(0).getY() - y;
+            int distanceX = loadMap.getBomber1().getX() - x;
+            int distanceY = loadMap.getBomber1().getY() - y;
 
             int sideX = signOf(distanceX);
             int sideY = signOf(distanceY);  //System.out.println(sideX + " " + sideY + "--------------");
@@ -178,22 +161,13 @@ public class Oneal extends Mob {
     }
 
     public int signOf (int inputInt) {
-        if (inputInt > 0) {
-            return 1;
-        } else if (inputInt < 0) {
-            return -1;
-        } else {
-            return 0;
-        }
+        return Integer.compare(inputInt, 0);
     }
 
     public boolean bomberIsNotMoving() {
 
-        Bomber bomber = (Bomber)loadMap.getMob().get(0);
+        Bomber bomber = loadMap.getBomber1();
 
-        if (bomber.getDx() == 0 && bomber.getDy() == 0) {
-            return true;
-        }
-        return false;
+        return bomber.getDx() == 0 && bomber.getDy() == 0;
     }
 }
