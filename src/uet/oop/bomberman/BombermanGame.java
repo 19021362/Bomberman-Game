@@ -1,9 +1,13 @@
 package uet.oop.bomberman;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -12,21 +16,27 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.mob.Bomber;
+import uet.oop.bomberman.entities.mob.Mob;
 import uet.oop.bomberman.graphics.Sound;
 import uet.oop.bomberman.graphics.Sprite;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import javax.swing.*;
+import java.io.*;
+import java.sql.Time;
+import java.time.Clock;
+import java.util.*;
+import java.util.stream.IntStream;
 
-import static javafx.scene.paint.Color.*;
+import static javafx.scene.layout.BackgroundSize.*;
+import static javafx.scene.paint.Color.YELLOW;
 
 public class BombermanGame extends Application {
 
@@ -42,17 +52,15 @@ public class BombermanGame extends Application {
     private Button start = new Button("START");
     private Button again = new Button("AGAIN");
 
-    private Label labelBlood = new Label();
-    private Label labelLevel = new Label();
-    private Label live = new Label();
+    public static Label labelBlood = new Label("BLOOD: ");
+    public static Label labelLevel = new Label("LEVEL: ");
+    public static Label labelTime = new Label("TIME: ");
 
     private boolean nextLevel = false;
     public static int level = 1;
     public static final int levelMax = 3;
-    //private List<Entity> entities = new ArrayList<>();
     //private List<Entity> stillObjects = new ArrayList<>();
-
-
+    private int time = 0;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -76,6 +84,10 @@ public class BombermanGame extends Application {
         initBGD(gc, Sprite.bgd);
         setButton();
 
+
+        setButton();
+        setLabel();
+
         exit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -91,6 +103,9 @@ public class BombermanGame extends Application {
                 start.setDisable(true);
                 exit.setVisible(false);
                 exit.setDisable(true);
+                labelBlood.setVisible(true);
+                labelLevel.setVisible(true);
+                labelTime.setVisible(true);
             }
         });
 
@@ -98,6 +113,7 @@ public class BombermanGame extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 level = 1;
+                time = 0;
                 again.setVisible(false);
                 again.setDisable(true);
                 exit.setVisible(false);
@@ -112,7 +128,7 @@ public class BombermanGame extends Application {
 
         // Them scene vao stage
 
-        root.getChildren().addAll(start, exit, again);
+        root.getChildren().addAll(start, exit, again, labelBlood, labelLevel, labelTime);
         stage.setScene(scene);
         stage.show();
 
@@ -123,18 +139,15 @@ public class BombermanGame extends Application {
 
     private void gameLoop(Scene scene) {
         loadMap.load(level);
-        Entity bomber = null;
-        for (int i = 0; i < loadMap.getMob().size(); i++) {
-            if (loadMap.getMob().get(i) instanceof Bomber) {
-                bomber = loadMap.getMob().get(i);
-            }
-        }
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                time++;
                 render();
                 update();
+                labelLevel.setText("LEVEL: " + level);
+                labelTime.setText("TIME: " + (time / 60));
                 if (loadMap.isNextLevel()) {
                     loadMap.clear();
                     loadMap.setNextLevel(false);
@@ -145,6 +158,7 @@ public class BombermanGame extends Application {
                     } else {
                         try {
                             initBGD(gc, Sprite.gWin);
+
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
@@ -193,6 +207,7 @@ public class BombermanGame extends Application {
                 loadMap.getStillObjects().get(i).update();
             }
         }
+
     }
 
 
@@ -236,7 +251,9 @@ public class BombermanGame extends Application {
         gc.drawImage(image, 0, 0);
     }
 
-    public void setButton() {
+
+
+    private void setButton() {
         exit.setFont(Font.font(24));
         exit.setMinSize(width_b * 2, height_b * 2);
         exit.setLayoutX(((WIDTH * Sprite.SCALED_SIZE) / 2) - width_b);
@@ -255,6 +272,26 @@ public class BombermanGame extends Application {
         again.setVisible(false);
 
     }
+
+
+    private void setLabel() {
+        labelBlood.setFont(Font.font("Cambria", 14));
+        labelBlood.setLayoutX(5);
+        labelBlood.setLayoutY(Sprite.SCALED_SIZE * HEIGHT);
+        labelBlood.setVisible(false);
+
+        labelLevel.setFont(Font.font("Cambria", 14));
+        labelLevel.setLayoutX(((WIDTH * Sprite.SCALED_SIZE) / 2) - 30);
+        labelLevel.setLayoutY(Sprite.SCALED_SIZE * HEIGHT);
+        labelLevel.setVisible(false);
+
+        labelTime.setFont(Font.font("Cambria", 14));
+        labelTime.setLayoutX((WIDTH * Sprite.SCALED_SIZE) - 150);
+        labelTime.setLayoutY(Sprite.SCALED_SIZE * HEIGHT);
+        labelTime.setVisible(false);
+
+    }
+
 
     public boolean isNextLevel() {
         return nextLevel;
