@@ -4,7 +4,6 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.loadMap;
 
-
 import java.util.Random;
 
 public class Oneal extends Mob {
@@ -62,7 +61,6 @@ public class Oneal extends Mob {
     }
 
     public void move() {
-
         //Gọi hàm đuổi
         if (!chaseTheBomber()) {  //Nếu ngoài tầm đuổi ( đang không đuổi)
             randomMove();
@@ -171,3 +169,4 @@ public class Oneal extends Mob {
         return bomber.getDx() == 0 && bomber.getDy() == 0;
     }
 }
+

@@ -47,6 +47,7 @@ public class BombermanGame extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
+
     private Button exit = new Button("EXIT");
     private Button start = new Button("START");
     private Button again = new Button("AGAIN");
@@ -81,6 +82,8 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root);
 
         initBGD(gc, Sprite.bgd);
+        setButton();
+
 
         setButton();
         setLabel();
@@ -105,7 +108,6 @@ public class BombermanGame extends Application {
                 labelTime.setVisible(true);
             }
         });
-
 
         again.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -250,6 +252,7 @@ public class BombermanGame extends Application {
     }
 
 
+
     private void setButton() {
         exit.setFont(Font.font(24));
         exit.setMinSize(width_b * 2, height_b * 2);
@@ -270,6 +273,7 @@ public class BombermanGame extends Application {
 
     }
 
+
     private void setLabel() {
         labelBlood.setFont(Font.font("Cambria", 14));
         labelBlood.setLayoutX(5);
@@ -287,6 +291,7 @@ public class BombermanGame extends Application {
         labelTime.setVisible(false);
 
     }
+
 
     public boolean isNextLevel() {
         return nextLevel;
