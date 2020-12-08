@@ -28,7 +28,10 @@ public class Balloom extends Mob {
     public void update() {
         if (blood > 0) {
             calculateDir();
-            move();
+            randomMove();
+            if (status % 50 == 0) {
+                speed = Math.abs(rd.nextInt()) % 3 + 1;
+            }
             if (!live) {
                 blood--;
                 setLive(true);
@@ -45,8 +48,9 @@ public class Balloom extends Mob {
     }
 
 
+
     void calculateDir(){
-        if(side_h == 1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
+        if (side_h == 1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
             if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
                 this.img = Sprite.balloom_right1.getFxImage();
             } else if (status % 9 == 3) {
@@ -55,7 +59,7 @@ public class Balloom extends Mob {
                 this.img = Sprite.balloom_right3.getFxImage();
             }
         }
-        if(side_h == -1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
+        if (side_h == -1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
             if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
                 this.img = Sprite.balloom_left1.getFxImage();
             } else if (status % 9 == 3) {
@@ -66,7 +70,7 @@ public class Balloom extends Mob {
         }
     }
 
-    public void move() {
+    private void randomMove() {
         switch (dir){
             case 0:
                 if(side_h == 1) {status++;}
