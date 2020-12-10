@@ -15,10 +15,8 @@ import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.text.Format;
+import java.util.*;
 
 public class loadMap {
     /*private static String input_level1 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\1.txt"; //F:\
@@ -89,7 +87,6 @@ public class loadMap {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     public static List<Entity> getStillObjects() {
@@ -122,11 +119,7 @@ public class loadMap {
         stillObjects.clear();
         mob.removeIf(o -> !(o instanceof Bomber));
 
-        for (Entity o : mob) {
-            if (o instanceof Bomber) {
-                o.setPosition(1, 1);
-            }
-        }
+        mob.stream().filter(o -> o instanceof Bomber).forEach(o -> o.setPosition(1, 1));
     }
 
     public static void setNumEnemy(int numEnemy) {
@@ -138,14 +131,11 @@ public class loadMap {
     }
 
     public static boolean gameOn() {
-        boolean check = false;
-        for (Entity o : mob) {
-            if (o instanceof Bomber) {
-                check = true;
-                break;
-            }
-        }
-        return check;
+        return mob.stream().anyMatch(o -> o instanceof Bomber);
+    }
+
+    public static void resetMap() {
+        mob.stream().filter(Objects::nonNull).forEach(o -> o.setPosition(o.getFirstX(), o.getFirstY()));
     }
 
     public static boolean isNextLevel() {

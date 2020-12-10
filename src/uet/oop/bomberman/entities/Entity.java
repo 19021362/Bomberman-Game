@@ -26,6 +26,8 @@ public abstract class Entity {
     protected int y;
 
     protected Image img;
+    protected int firstX;
+    protected int firstY;
 
     public int status = 0;
 
@@ -36,6 +38,8 @@ public abstract class Entity {
         this.x = xUnit * Sprite.SCALED_SIZE;
         this.y = yUnit * Sprite.SCALED_SIZE;
         this.img = img;
+        this.firstX = xUnit;
+        this.firstY = yUnit;
     }
 
     public void render(GraphicsContext gc) {
@@ -100,5 +104,11 @@ public abstract class Entity {
         return this.y;
     }
 
+    public int getFirstX() {
+        return firstX;
+    }
 
+    public int getFirstY() {
+        return firstY;
+    }
 }
