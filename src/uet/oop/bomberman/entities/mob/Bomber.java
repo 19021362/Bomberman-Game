@@ -88,6 +88,7 @@ public class Bomber extends Mob {
             }
             if (!live) {
                 PlayMusic(Sound.new_fx);
+                loadMap.resetMap();
                 blood--;
                 if (blood > 0) {
                     setLive(true);
