@@ -10,7 +10,6 @@ public class Oneal extends Mob {
     private int speed = 2;
     private int dir = 0;
     private int side_h = 1;     // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái.
-    private int checkCollision = 0;
     private final Random rd = new Random();
 
 
@@ -24,8 +23,8 @@ public class Oneal extends Mob {
             calculateDir();
             move();
             if (status % 50 == 0) {
-                speed = Math.abs(rd.nextInt()) % 3 + 1;
-                dir = Math.abs(rd.nextInt() % 3 +1);
+                speed = Math.abs(rd.nextInt()) % 3 + 2;
+                //dir = Math.abs(rd.nextInt() % 4);
             }
             if (!live) {
                 blood--;
@@ -68,19 +67,19 @@ public class Oneal extends Mob {
         int distanceX = loadMap.getBomber1().getX() - x;
         int distanceY = loadMap.getBomber1().getY() - y;
 
-        if (Math.abs(distanceX) < 1000 && Math.abs(distanceY) <= 4) {
+        if (Math.abs(distanceX) < 300 && Math.abs(distanceY) <= 4) {
             x += signOf(distanceX) * speed;
             status++;
             if (collision()) {
                 x -= signOf(distanceX) * speed;
-                checkCollision++;
+                randomMove();
             }
-        } else if (Math.abs(distanceY) < 1000 && Math.abs(distanceX) <= 4) {
+        } else if (Math.abs(distanceY) < 300 && Math.abs(distanceX) <= 4) {
             y += signOf(distanceY) * speed;
             status++;
             if (collision()) {
                 y -= signOf(distanceY) * speed;
-                checkCollision++;
+                randomMove();
             }
         } else {
             randomMove();
@@ -141,6 +140,6 @@ public class Oneal extends Mob {
     public int signOf (int inputInt) {
         return Integer.compare(inputInt, 0);
     }
-    
+
 }
 
