@@ -7,9 +7,8 @@ import uet.oop.bomberman.loadMap;
 
 import java.util.List;
 
-public class Bomb_item extends Item{
-
-    public Bomb_item(int xUnit, int yUnit, Image img) {
+public class Speed_Item extends Item {
+    public Speed_Item(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
 
@@ -18,7 +17,7 @@ public class Bomb_item extends Item{
         List<Entity> list = loadMap.getMob();
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i) instanceof Bomber) {
-                ((Bomber) list.get(i)).boostLength_bomb();
+                ((Bomber) list.get(i)).boostSpeed();
             }
         }
     }

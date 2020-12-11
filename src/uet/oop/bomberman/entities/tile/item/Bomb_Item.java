@@ -7,16 +7,17 @@ import uet.oop.bomberman.loadMap;
 
 import java.util.List;
 
-public class Live_item extends Item {
-    public Live_item(int xUnit, int yUnit, Image img) {
+public class Bomb_Item extends Item {
+    public Bomb_Item(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
 
     @Override
     public void power() {
-        for (int i = 0; i < loadMap.getMob().size(); i++) {
-            if (loadMap.getMob().get(i) instanceof Bomber) {
-                ((Bomber) loadMap.getMob().get(i)).setBlood(1);
+        List<Entity> list = loadMap.getMob();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) instanceof Bomber) {
+                ((Bomber) list.get(i)).boostBomb();
             }
         }
     }

@@ -25,11 +25,11 @@ public class Bomber extends Mob {
 
     private final int maxLength = 5;
     private int length_bomb = 1;
-    private final int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
+    //private final int side = 1;                // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái
 
-    private final int maxBomb = 5 ;
-    private final int numBomb = 1;
-    public static int recentBomb = 0;
+    private final int maxBomb = 5 ;             // Số bom tối đa có thể boost đến
+    private int numOfBomb = 1;                  // Số bom tối đa có thể đặt lúc chơi game
+    public static int recentBomb = 0;           // Số bom hiện tại đã đặt
 
     private final int maxBlood = 5;
 
@@ -50,39 +50,39 @@ public class Bomber extends Mob {
                 y += dy;
             }
             if (side_h == 1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
-                if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
+                if (status % 3== 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
                     this.img = Sprite.player_right.getFxImage();
-                } else if (status % 9 == 3) {
+                } else if (status % 3 == 1) {
                     this.img = Sprite.player_right_1.getFxImage();
-                } else if (status % 9 == 6) {
+                } else if (status % 3 == 2) {
                     this.img = Sprite.player_right_2.getFxImage();
                 }
             }
 
             if (side_h == -1) {                         //Nếu đang chạy phải sang trái thì dùng 3 ảnh dưới
-                if (status % 9 == 0) {
+                if (status % 3 == 0) {
                     this.img = Sprite.player_left.getFxImage();
-                } else if (status % 9 == 3) {
+                } else if (status % 3 == 1) {
                     this.img = Sprite.player_left_1.getFxImage();
-                } else if (status % 9 == 6) {
+                } else if (status % 3 == 2) {
                     this.img = Sprite.player_left_2.getFxImage();
                 }
             }
             if (side_v == 1) {                       //Nếu đang chạy trên xuống dưới thì dùng 3 ảnh dưới
-                if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
+                if (status % 3 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
                     this.img = Sprite.player_down.getFxImage();
-                } else if (status % 9 == 3) {
+                } else if (status % 3 == 1) {
                     this.img = Sprite.player_down_1.getFxImage();
-                } else if (status % 9 == 6) {
+                } else if (status % 3 == 2) {
                     this.img = Sprite.player_down_2.getFxImage();
                 }
             }
             if (side_v == -1) {                         //Nếu đang chạy dưới lên trên thì dùng 3 ảnh dưới
-                if (status % 9 == 0) {
+                if (status % 3 == 0) {
                     this.img = Sprite.player_up.getFxImage();
-                } else if (status % 9 == 3) {
+                } else if (status % 3 == 1) {
                     this.img = Sprite.player_up_1.getFxImage();
-                } else if (status % 9 == 6) {
+                } else if (status % 3 == 2) {
                     this.img = Sprite.player_up_2.getFxImage();
                 }
             }
@@ -186,7 +186,7 @@ public class Bomber extends Mob {
                 dy = speed;
                 break;
             case SPACE:
-                if(recentBomb < maxBomb){
+                if(recentBomb < numOfBomb){
                     recentBomb++;
                     creatBomb();
                     break;
@@ -252,12 +252,19 @@ public class Bomber extends Mob {
         }
     }
 
+    public void boostBomb(){
+        if(numOfBomb<maxBomb){
+            numOfBomb++;
+        }
+    }
+
     @Override
     public void setBlood(int blood) {
         if (this.blood < maxBlood) {
             this.blood += blood;
         }
     }
+
 
     public int getDx() {
         return dx;
