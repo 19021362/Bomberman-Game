@@ -49,43 +49,7 @@ public class Bomber extends Mob {
                 x += dx;
                 y += dy;
             }
-            if (side_h == 1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
-                if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
-                    this.img = Sprite.player_right.getFxImage();
-                } else if (status % 9 == 3) {
-                    this.img = Sprite.player_right_1.getFxImage();
-                } else if (status % 9 == 6) {
-                    this.img = Sprite.player_right_2.getFxImage();
-                }
-            }
-
-            if (side_h == -1) {                         //Nếu đang chạy phải sang trái thì dùng 3 ảnh dưới
-                if (status % 9 == 0) {
-                    this.img = Sprite.player_left.getFxImage();
-                } else if (status % 9 == 3) {
-                    this.img = Sprite.player_left_1.getFxImage();
-                } else if (status % 9 == 6) {
-                    this.img = Sprite.player_left_2.getFxImage();
-                }
-            }
-            if (side_v == 1) {                       //Nếu đang chạy trên xuống dưới thì dùng 3 ảnh dưới
-                if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
-                    this.img = Sprite.player_down.getFxImage();
-                } else if (status % 9 == 3) {
-                    this.img = Sprite.player_down_1.getFxImage();
-                } else if (status % 9 == 6) {
-                    this.img = Sprite.player_down_2.getFxImage();
-                }
-            }
-            if (side_v == -1) {                         //Nếu đang chạy dưới lên trên thì dùng 3 ảnh dưới
-                if (status % 9 == 0) {
-                    this.img = Sprite.player_up.getFxImage();
-                } else if (status % 9 == 3) {
-                    this.img = Sprite.player_up_1.getFxImage();
-                } else if (status % 9 == 6) {
-                    this.img = Sprite.player_up_2.getFxImage();
-                }
-            }
+            caculateDir();
             if (!live) {
                 PlayMusic(Sound.new_fx);
                 loadMap.resetMap();
@@ -217,6 +181,50 @@ public class Bomber extends Mob {
         loadMap.getStillObjects().add(top);
     }
 
+    private void caculateDir() {
+        if (side_h == 1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
+            if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
+                this.img = Sprite.player_right.getFxImage();
+            } else if (status % 9 == 3) {
+                this.img = Sprite.player_right_1.getFxImage();
+            } else if (status % 9 == 6) {
+                this.img = Sprite.player_right_2.getFxImage();
+            }
+        }
+
+        if (side_h == -1) {                         //Nếu đang chạy phải sang trái thì dùng 3 ảnh dưới
+            if (status % 9 == 0) {
+                this.img = Sprite.player_left.getFxImage();
+            } else if (status % 9 == 3) {
+                this.img = Sprite.player_left_1.getFxImage();
+            } else if (status % 9 == 6) {
+                this.img = Sprite.player_left_2.getFxImage();
+            }
+        }
+        if (side_v == 1) {                       //Nếu đang chạy trên xuống dưới thì dùng 3 ảnh dưới
+            if (status % 9 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
+                this.img = Sprite.player_down.getFxImage();
+            } else if (status % 9 == 3) {
+                this.img = Sprite.player_down_1.getFxImage();
+            } else if (status % 9 == 6) {
+                this.img = Sprite.player_down_2.getFxImage();
+            }
+        }
+        if (side_v == -1) {                         //Nếu đang chạy dưới lên trên thì dùng 3 ảnh dưới
+            if (status % 9 == 0) {
+                this.img = Sprite.player_up.getFxImage();
+            } else if (status % 9 == 3) {
+                this.img = Sprite.player_up_1.getFxImage();
+            } else if (status % 9 == 6) {
+                this.img = Sprite.player_up_2.getFxImage();
+            }
+        }
+    }
+
+    private void save() {
+        img = Sprite.movingSprite(Sprite.player_right, null, Sprite.player_right_2, animation, 40).getFxImage();
+    }
+
     @Override
     public void kill() {
         img = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animation, 30).getFxImage();
@@ -231,7 +239,7 @@ public class Bomber extends Mob {
                 check = false;
                 break;
             } else {
-                if (o!= null && !o.canPass && rect.intersects(o.getBound().getBoundsInParent())) {
+                if (o != null && !o.canPass && rect.intersects(o.getBound().getBoundsInParent())) {
                     check = true;
                     break;
                 }
