@@ -7,11 +7,6 @@ import uet.oop.bomberman.loadMap;
 import java.util.Random;
 
 public class Oneal extends Mob {
-    private int speed = 2;
-    private int dir = 0;
-    private int side_h = 1;     // Hướng chạy hiện tại. 1: Trái -> Phải. -1: Phải -> Trái.
-    private final Random rd = new Random();
-
 
     public Oneal(int x, int y, Image img) {
         super( x, y, img);
@@ -42,7 +37,7 @@ public class Oneal extends Mob {
     }
 
 
-    void calculateDir(){
+    private void calculateDir(){
         if(side_h == 1) {                       //Nếu đang chạy trái sang phải thì dùng 3 ảnh dưới
             if (status % 27 == 0) {              //%9 thay vì %3 và status == 0 3 6 để giảm tốc độ cử động, muốn chậm hơn có thể % 27, ...( vẩy tay vẩy chân quá nhanh trong khi di chuyển chậm, nên sửa test status % 3 == 0, 1, 2 để hiểu hơn)
                 this.img = Sprite.oneal_right1.getFxImage();
@@ -89,52 +84,6 @@ public class Oneal extends Mob {
     @Override
     public void kill() {
         img = Sprite.movingSprite(Sprite.oneal_dead, Sprite.mob_dead2, Sprite.mob_dead3, animation, 50).getFxImage();
-    }
-
-    public void randomMove() {
-        //System.out.println(dir);
-        switch (dir){       // Khi va cham wall, brick, bomb thi chuyen huong di chuyen ngau nhien
-            case 0:
-                if(side_h == 1) {status++;}
-                else{
-                    side_h = 1;
-                    status = 0;
-                }
-                x += speed;
-                if (collision()) {
-                    x -= speed;
-                    dir = Math.abs(rd.nextInt() % 4);
-                }
-                break;
-            case 1:
-                status++;
-                y += speed;
-                if (collision()) {
-                    y -= speed;
-                    dir = Math.abs(rd.nextInt() % 4);
-                }
-                break;
-            case 2:
-                if(side_h == -1) {status++;}
-                else{
-                    side_h = -1;
-                    status = 0;
-                }
-                x -= speed;
-                if (collision()) {
-                    x += speed;
-                    dir = Math.abs(rd.nextInt() % 4);
-                }
-                break;
-            case 3:
-                status++;
-                y -= speed;
-                if (collision()) {
-                    y += speed;
-                    dir = Math.abs(rd.nextInt() % 4);
-                }
-                break;
-        }
     }
 
     public int signOf (int inputInt) {
