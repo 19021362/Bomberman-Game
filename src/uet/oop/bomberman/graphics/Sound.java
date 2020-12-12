@@ -1,4 +1,4 @@
-/*
+
 package uet.oop.bomberman.graphics;
 
 public class Sound {
@@ -10,7 +10,7 @@ public class Sound {
     public static String exp = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\explosion.WAV";
 }
 
- */
+/*
 package uet.oop.bomberman.graphics;
 
 public class Sound {
@@ -20,5 +20,5 @@ public class Sound {
     public static String dead_fx = "C:\\Users\\quang\\Desktop\\Bomberman-Game\\res\\sounds\\lose.WAV";
     public static String new_fx = "C:\\Users\\quang\\Desktop\\Bomberman-Game\\res\\sounds\\newLife.WAV";
     public static String exp = "C:\\Users\\quang\\Desktop\\Bomberman-Game\\res\\sounds\\explosion.WAV";
-}
+}*/
 
