@@ -26,6 +26,7 @@ public class Portal extends Entity {
         if (collision()) {
             loadMap.setNextLevel(true);
             PlayMusic(Sound.nextLevel);
+            remove(this);
         }
     }
 
