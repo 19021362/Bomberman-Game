@@ -30,13 +30,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.io.*;
-import java.sql.Time;
-import java.time.Clock;
-import java.util.*;
-import java.util.stream.IntStream;
 
-import static javafx.scene.layout.BackgroundSize.*;
-import static javafx.scene.paint.Color.YELLOW;
 
 public class BombermanGame extends Application {
 
@@ -55,12 +49,14 @@ public class BombermanGame extends Application {
     public static Label labelBlood = new Label("BLOOD: ");
     public static Label labelLevel = new Label("LEVEL: ");
     public static Label labelTime = new Label("TIME: ");
+    public static Label labelBreakLevel = new Label();
 
     private boolean nextLevel = false;
     public static int level = 1;
     public static final int levelMax = 3;
     //private List<Entity> stillObjects = new ArrayList<>();
     private int time = 0;
+    private int breakTime = 0;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -80,10 +76,6 @@ public class BombermanGame extends Application {
 
         // Tao scene
         Scene scene = new Scene(root);
-
-        initBGD(gc, Sprite.bgd);
-        setButton();
-
 
         setButton();
         setLabel();
@@ -128,7 +120,7 @@ public class BombermanGame extends Application {
 
         // Them scene vao stage
 
-        root.getChildren().addAll(start, exit, again, labelBlood, labelLevel, labelTime);
+        root.getChildren().addAll(start, exit, again, labelBlood, labelLevel, labelTime, labelBreakLevel);
         stage.setScene(scene);
         stage.show();
 
@@ -139,33 +131,12 @@ public class BombermanGame extends Application {
 
     private void gameLoop(Scene scene) {
         loadMap.load(level);
-
+        loadMap.setNextLevel(true);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                time++;
-                render();
-                update();
-                labelLevel.setText("LEVEL: " + level);
-                labelTime.setText("TIME: " + (time / 60));
-                if (loadMap.isNextLevel()) {
-                    loadMap.clear();
-                    loadMap.setNextLevel(false);
-                    level++;
-                    if (level <= levelMax) {
-                        Bomber.recentBomb = 0;
-                        loadMap.load(level);
-                    } else {
-                        try {
-                            initBGD(gc, Sprite.gWin);
+                //time++;
 
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        this.stop();
-                    }
-
-                }
                 if (!loadMap.gameOn()) {
                     this.stop();
                     try {
@@ -177,11 +148,44 @@ public class BombermanGame extends Application {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    render();
+                    update();
+                    move(scene);
+
+                    labelLevel.setText("LEVEL: " + (level - 1));
+                    labelTime.setText("TIME: " + (time / 60));
+                    if (loadMap.isNextLevel()) {
+                        breakTime++;
+                        if (breakTime == 120) {
+                            labelBreakLevel.setVisible(false);
+                            loadMap.clear();
+                            loadMap.setNumEnemy(-loadMap.getNumEnemy());
+                            loadMap.setNextLevel(false);
+                            if (level <= levelMax) {
+                                Bomber.recentBomb = 0;
+                                loadMap.load(level);
+                            } else {
+                                try {
+                                    initBGD(gc, Sprite.gWin);
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                                this.stop();
+                            }
+                            level++;
+                            breakTime = 0;
+                        } else {
+                            breakLevel();
+
+                        }
+                    } else {
+                        time++;
+                    }
                 }
             }
         };
 
-        move(scene);
         timer.start();
 
     }
@@ -229,7 +233,8 @@ public class BombermanGame extends Application {
         try
         {
             Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(new File("C:\\Users\\ASUS\\Downloads\\chrismas.WAV")));
+            clip.open(AudioSystem.getAudioInputStream(
+                    new File("C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\chrismas.WAV")));
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             if (play) {
                 clip.start();
@@ -245,7 +250,7 @@ public class BombermanGame extends Application {
     }
 
     private void initBGD(GraphicsContext gc, String filePath) throws FileNotFoundException {
-        Image image = new javafx.scene.image.Image(new FileInputStream(filePath),
+        Image image = new Image(new FileInputStream(filePath),
                 Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT + 20, false, false);
 
         gc.drawImage(image, 0, 0);
@@ -290,8 +295,18 @@ public class BombermanGame extends Application {
         labelTime.setLayoutY(Sprite.SCALED_SIZE * HEIGHT);
         labelTime.setVisible(false);
 
+        labelBreakLevel.setFont(Font.font("Cambria", 36));
+        labelBreakLevel.setLayoutX((WIDTH * Sprite.DEFAULT_SIZE) - 50);
+        labelBreakLevel.setLayoutY((HEIGHT * Sprite.DEFAULT_SIZE) - 20);
+        labelBreakLevel.setVisible(false);
     }
 
+    private void breakLevel() {
+        labelBreakLevel.setVisible(true);
+        labelBreakLevel.setText("LEVEL " + level);
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
 
     public boolean isNextLevel() {
         return nextLevel;
