@@ -8,10 +8,7 @@ import uet.oop.bomberman.entities.tile.Brick;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Portal;
 import uet.oop.bomberman.entities.tile.Wall;
-import uet.oop.bomberman.entities.tile.item.Bomb_Item;
-import uet.oop.bomberman.entities.tile.item.Flame_Item;
-import uet.oop.bomberman.entities.tile.item.Live_Item;
-import uet.oop.bomberman.entities.tile.item.Speed_Item;
+import uet.oop.bomberman.entities.tile.item.*;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.FileNotFoundException;
@@ -22,11 +19,11 @@ public class loadMap {
     /*private static String input_level1 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\1.txt"; //F:\
     private static String input_Level2 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\2.txt";
     private static String input_Level3 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\3.txt";*/
-    /*
+
     private static String input_level1 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\1.txt";
     private static String input_Level2 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\2.txt";
     private static String input_Level3 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\3.txt";
-     */
+
 
     //private static String input_level1 = "C:\\Users\\quang\\Desktop\\Bomberman-Game\\res\\levels\\1.txt";
     //private static String input_Level2 = "C:\\Users\\quang\\Desktop\\Bomberman-Game\\res\\levels\\2.txt";
@@ -43,7 +40,8 @@ public class loadMap {
      * ĐỌc bản đồ từ file.
      */
     public static void load(int level) {
-        String path = "C:\\Users\\quang\\Desktop\\Bomberman-Game\\res\\levels\\" + level + ".txt";
+        //String path = "C:\\Users\\quang\\Desktop\\Bomberman-Game\\res\\levels\\" + level + ".txt";
+        String path = getInput(level);
         Random rd = new Random();
         try {
             FileReader input = new FileReader(path);
@@ -93,9 +91,20 @@ public class loadMap {
                 j++;
 
             }
+            int i = 0;
+            for (int k = 0; k < mob.size(); k++) {
+                if (mob.get(k) instanceof Bomber) {
+                    i++;
+                    if (i > 1) {
+                        System.out.println(i);
+                        mob.remove(mob.get(k));
+                    }
+                }
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
     }
 
     public static List<Entity> getStillObjects() {
@@ -114,7 +123,7 @@ public class loadMap {
         stillObjects.remove(o);
     }
 
-    /*
+
     private static String getInput(int level) {
         if (level == 1) {
             return input_level1;
@@ -124,12 +133,12 @@ public class loadMap {
             return input_Level3;
         }
     }
-     */
+
 
     public static void clear() {
         stillObjects.clear();
+        //mob.clear();
         mob.removeIf(o -> !(o instanceof Bomber));
-
         mob.stream().filter(o -> o instanceof Bomber).forEach(o -> o.setPosition(1, 1));
     }
 
