@@ -16,13 +16,13 @@ import java.io.FileReader;
 import java.util.*;
 
 public class loadMap {
-    /*private static String input_level1 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\1.txt"; //F:\
+    private static String input_level1 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\1.txt"; //F:\
     private static String input_Level2 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\2.txt";
-    private static String input_Level3 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\3.txt";*/
+    private static String input_Level3 = "F:\\GitHub\\Bomberman-Game\\res\\levels\\3.txt";
 
-    private static String input_level1 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\1.txt";
+    /*private static String input_level1 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\1.txt";
     private static String input_Level2 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\2.txt";
-    private static String input_Level3 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\3.txt";
+    private static String input_Level3 = "C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\levels\\3.txt";*/
 
 
     //private static String input_level1 = "C:\\Users\\quang\\Desktop\\Bomberman-Game\\res\\levels\\1.txt";

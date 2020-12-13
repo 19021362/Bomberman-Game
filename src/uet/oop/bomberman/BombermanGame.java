@@ -234,7 +234,7 @@ public class BombermanGame extends Application {
         {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(
-                    new File("C:\\Users\\ASUS\\Documents\\GitHub\\Bomberman-Game\\res\\sounds\\chrismas.WAV")));
+                    new File("F:\\Github\\Bomberman-Game\\res\\sounds\\chrismas.WAV"))); //C:\Users\ASUS\Documents\GitHub\Bomberman-Game\res\sounds\chrismas.WAV
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             if (play) {
                 clip.start();
